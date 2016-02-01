@@ -7,7 +7,7 @@ define letsencrypt::csr(
     $unit = '',
     $email = '',
     $altnames = [],
-    $password = '',
+    $password = undef,
     $ensure = 'present',
     $force = true,
 ) {
