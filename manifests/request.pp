@@ -1,5 +1,6 @@
 define letsencrypt::request (
     $csr,
+    $challengetype,
     $domain = $name
 ) {
 
@@ -12,8 +13,7 @@ define letsencrypt::request (
     $crt_file = "${base_dir}/${domain}.crt"
     $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
-    $letsencrypt_conf   = $::letsencrypt::params::letsencrypt_sh
-    $letsencrypt_hook   = $::letsencrypt::params::letsencrypt_sh
+    $letsencrypt_hook   = $::letsencrypt::params::letsencrypt_sh_hook
 
     File {
         owner   => 'letsencrypt',
@@ -63,7 +63,6 @@ define letsencrypt::request (
             Group['letsencrypt'],
             File[$csr_file],
             Vcsrepo[$letsencrypt_sh_dir],
-            File[$letsencrypt_conf],
             File[$letsencrypt_hook]
         ],
 

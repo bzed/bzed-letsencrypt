@@ -37,7 +37,10 @@
 #
 class letsencrypt (
     $domains = [],
-    $letsencrypt_sh_git_url = 'https://github.com/lukas2511/letsencrypt.sh.git'
+    $letsencrypt_sh_git_url = 'https://github.com/lukas2511/letsencrypt.sh.git',
+    $challengetype = 'dns-01',
+    $hook_source = undef,
+    $hook_content = undef
 ){
 
     require ::letsencrypt::params
@@ -63,8 +66,13 @@ class letsencrypt (
     }
 
     if ($::fqdn == $::puppetmaster) {
+        if not ($hook_source or $hook_content) {
+            fail('$hook_source or $hook_content needs to be specified!')
+        }
         class { '::letsencrypt::request::handler' :
-            letsencrypt_sh_git_url => $letsencrypt_sh_git_url
+            letsencrypt_sh_git_url => $letsencrypt_sh_git_url,
+            hook_source            => $hook_source,
+            hook_content           => $hook_content
         }
     }
 
