@@ -19,18 +19,22 @@ req_extensions          = req_ext
 <% end -%>
 
 [ req_distinguished_name ]
+commonName                      = <%= @domain %>
+<% unless @contry.nil? -%>
 countryName                     = <%= @country %>
+<% end -%>
 <% unless @state.nil? -%>
 stateOrProvinceName             = <%= @state %>
 <% end -%>
 <% unless @locality.nil? -%>
 localityName                    = <%= @locality %>
 <% end -%>
+<% unless @organization.nil? -%>
 organizationName                = <%= @organization %>
+<% end -%>
 <% unless @unit.nil? -%>
 organizationalUnitName          = <%= @unit %>
 <% end -%>
-commonName                      = <%= @domai %>
 <% unless @email.nil? -%>
 emailAddress                    = <%= @email %>
 <% end -%>
