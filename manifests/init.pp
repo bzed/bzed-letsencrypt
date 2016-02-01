@@ -65,7 +65,15 @@ class letsencrypt (
     }
 
     if ($::fqdn == $::puppetmaster) {
-        include ::letsencrypt::request::handler
+        class { '::letsencrypt::request::handler' :
+            letsencrypt_sh_git_url => $letsencrypt_sh_git_url
+        }
+    }
+
+
+    letsencrypt::deploy { $domains :
+    }
+    letsencrypt::csr { $domains :
     }
 
 }

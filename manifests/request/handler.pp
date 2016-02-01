@@ -1,4 +1,6 @@
-class letsencrypt::request::handler {
+class letsencrypt::request::handler(
+    $letsencrypt_sh_git_url
+){
 
     require ::letsencrypt::params
 
@@ -20,7 +22,7 @@ class letsencrypt::request::handler {
         ensure   => latest,
         revision => master,
         provider => git,
-        source   => $::letsencrypt::letsencrypt_sh_git_url,
+        source   => $letsencrypt_sh_git_url,
         user     => root,
         require  => File[$handler_base_dir]
     }
