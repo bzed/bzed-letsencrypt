@@ -82,7 +82,7 @@ define letsencrypt::csr(
             tag => $::puppetmaster
         }
     } else {
-        notice { "no CSR from facter for domain ${domain}" : }
+        notify { "no CSR from facter for domain ${domain}" : }
     }
     
 }
