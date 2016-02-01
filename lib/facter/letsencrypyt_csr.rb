@@ -1,7 +1,7 @@
 
 require 'facter'
 
-csr_domains = Dir['/etc/letsencrypt/csr/*.csr'].map{|a| a.gsub(/\.rb$/, '').gsub(/^.*\//, '') }
+csr_domains = Dir['/etc/letsencrypt/csr/*.csr'].map{|a| a.gsub(/\.csr$/, '').gsub(/^.*\//, '') }
 
 Facter.add(:letsencrypt_csrs) do
     setcode do
