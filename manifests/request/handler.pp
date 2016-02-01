@@ -7,6 +7,9 @@ class letsencrypt::request::handler(
     $handler_base_dir = $::letsencrypt::params::handler_base_dir
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
 
+    user { 'letsencrypt' :
+        gid => 'letsencrypt'
+    }
 
     File {
         owner => root,
