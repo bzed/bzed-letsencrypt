@@ -61,8 +61,6 @@ class letsencrypt (
     file { $::letsencrypt::params::key_dir :
         mode    => '0750',
     }
-    file { $::letsencrypt::params::csr_dir :
-    }
 
     if ($::fqdn == $::puppetmaster) {
         class { '::letsencrypt::request::handler' :
