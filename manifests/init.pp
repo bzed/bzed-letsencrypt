@@ -66,7 +66,7 @@ class letsencrypt (
     }
 
     if ($::fqdn == $::puppetmaster) {
-        if not ($hook_source or $hook_content) {
+        if !($hook_source or $hook_content) {
             fail('$hook_source or $hook_content needs to be specified!')
         }
         class { '::letsencrypt::request::handler' :
