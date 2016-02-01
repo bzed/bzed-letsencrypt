@@ -5,7 +5,7 @@ csr_domains = Dir['/etc/letsencrypt/csr/*.csr'].map{|a| a.gsub(/\.rb$/, '').gsub
 
 Facter.add(:letsencrypt_csrs) do
     setcode do
-        if csrs
+        if csr_domains
             csr_domains.join(',')
         else
             nil
