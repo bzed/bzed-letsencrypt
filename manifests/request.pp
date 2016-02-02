@@ -43,9 +43,8 @@ define letsencrypt::request (
     $le_command = join([
         $letsencrypt_sh,
         "-d ${domain}",
-        "-f ${letsencrypt_conf}",
         "-f ${letsencrypt_hook}",
-        '-t dns-01',
+        "-t ${challengetype}",
         '-a rsa',
         '--signcsr',
         $csr_file,

@@ -85,7 +85,8 @@ class letsencrypt (
         letsencrypt_host => $letsencrypt_host
     }
     letsencrypt::csr { $domains :
-        letsencrypt_host => $letsencrypt_host
+        letsencrypt_host => $letsencrypt_host,
+        challengetype    => $challengetype
     }
 
 }

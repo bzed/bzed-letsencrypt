@@ -1,5 +1,6 @@
 define letsencrypt::csr(
     $letsencrypt_host,
+    $challengetype,
     $domain = $name,
     $country = undef,
     $state = undef,
@@ -79,8 +80,9 @@ define letsencrypt::csr(
     $csr_content = getvar("::letsencrypt_csr_${domain}")
     if ($csr_content =~ /CERTIFICATE REQUEST/) {
         @@letsencrypt::request { $domain :
-            csr => $csr_content,
-            tag => $letsencrypt_host
+            csr           => $csr_content,
+            tag           => $letsencrypt_host,
+            challengetype => $challengetype
         }
     } else {
         notify { "no CSR from facter for domain ${domain}" : }
