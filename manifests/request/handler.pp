@@ -12,7 +12,11 @@ class letsencrypt::request::handler(
     $letsencrypt_sh_hook = $::letsencrypt::params::letsencrypt_sh_hook
 
     user { 'letsencrypt' :
-        gid => 'letsencrypt'
+        gid        => 'letsencrypt',
+        home       => $handler_base_dir,
+        shell      => '/bin/bash',
+        managehome => false,
+        password   => '!!'
     }
 
     File {
