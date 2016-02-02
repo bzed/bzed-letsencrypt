@@ -1,4 +1,5 @@
 define letsencrypt::csr(
+    $letsencrypt_host,
     $domain = $name,
     $country = undef,
     $state = undef,
@@ -79,7 +80,7 @@ define letsencrypt::csr(
     if ($csr_content =~ /CERTIFICATE REQUEST/) {
         @@letsencrypt::request { $domain :
             csr => $csr_content,
-            tag => $::puppetmaster
+            tag => $letsencrypt_host
         }
     } else {
         notify { "no CSR from facter for domain ${domain}" : }

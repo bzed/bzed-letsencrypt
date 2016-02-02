@@ -40,7 +40,8 @@ class letsencrypt (
     $letsencrypt_sh_git_url = 'https://github.com/lukas2511/letsencrypt.sh.git',
     $challengetype = 'dns-01',
     $hook_source = undef,
-    $hook_content = undef
+    $hook_content = undef,
+    $letsencrypt_host = $::puppetmaster
 ){
 
     require ::letsencrypt::params
@@ -65,7 +66,7 @@ class letsencrypt (
         mode    => '0750',
     }
 
-    if ($::fqdn == $::puppetmaster) {
+    if ($::fqdn == $letsencrypt_host) {
         if !($hook_source or $hook_content) {
             notify { '$hook_source or $hook_content needs to be specified!' :
                 loglevel => err
@@ -81,8 +82,10 @@ class letsencrypt (
 
 
     letsencrypt::deploy { $domains :
+        letsencrypt_host => $letsencrypt_host
     }
     letsencrypt::csr { $domains :
+        letsencrypt_host => $letsencrypt_host
     }
 
 }
