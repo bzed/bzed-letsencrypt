@@ -68,10 +68,11 @@ define letsencrypt::request (
 
     }
 
-    @@letsencrypt::deploy::crt { $domain :
-        crt_file => $crt_file,
-        tag      => $::fqdn,
-        require  => Exec["create-certificate-${domain}"]
+    if (file_exists($crt_file)) {
+        @@letsencrypt::deploy::crt { $domain :
+            crt_file => $crt_file,
+            tag      => $::fqdn,
+        }
     }
 
 }
