@@ -67,7 +67,7 @@ define letsencrypt::request (
 #
 #    }
 
-    if (file_exists($crt_file)) {
+    if (check_certificate($crt_file)) {
         @@letsencrypt::deploy::crt { $domain :
             crt_file => $crt_file,
             tag      => $::fqdn,
