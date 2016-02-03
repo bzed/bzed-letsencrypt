@@ -52,20 +52,20 @@ define letsencrypt::request (
         "&& mv ${crt_file}.new ${crt_file}"
     ], ' ')
 
-#    exec { "create-certificate-${domain}" :
-#        user    => 'letsencrypt',
-#        group   => 'letsencrypt',
-#        onlyif  => $le_check_command,
-#        command => $le_command,
-#        require => [
-#            User['letsencrypt'],
-#            Group['letsencrypt'],
-#            File[$csr_file],
-#            Vcsrepo[$letsencrypt_sh_dir],
-#            File[$letsencrypt_hook]
-#        ],
-#
-#    }
+    exec { "create-certificate-${domain}" :
+        user    => 'letsencrypt',
+        group   => 'letsencrypt',
+        onlyif  => $le_check_command,
+        command => $le_command,
+        require => [
+            User['letsencrypt'],
+            Group['letsencrypt'],
+            File[$csr_file],
+            Vcsrepo[$letsencrypt_sh_dir],
+            File[$letsencrypt_hook]
+        ],
+
+    }
 
     if (check_certificate($crt_file)) {
         @@letsencrypt::deploy::crt { $domain :
