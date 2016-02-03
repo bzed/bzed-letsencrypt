@@ -7,9 +7,10 @@ class letsencrypt::request::handler(
 
     require ::letsencrypt::params
 
-    $handler_base_dir    = $::letsencrypt::params::handler_base_dir
-    $letsencrypt_sh_dir  = $::letsencrypt::params::letsencrypt_sh_dir
-    $letsencrypt_sh_hook = $::letsencrypt::params::letsencrypt_sh_hook
+    $handler_base_dir     = $::letsencrypt::params::handler_base_dir
+    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
+    $letsencrypt_sh_dir   = $::letsencrypt::params::letsencrypt_sh_dir
+    $letsencrypt_sh_hook  = $::letsencrypt::params::letsencrypt_sh_hook
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -27,6 +28,10 @@ class letsencrypt::request::handler(
     file { $handler_base_dir :
         ensure => directory,
         mode   => '0755'
+    }
+    file { $handler_requests_dir :
+        ensure => directory,
+        mode   => '0755',
     }
 
     file { $letsencrypt_sh_hook :
