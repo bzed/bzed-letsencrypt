@@ -1,39 +1,51 @@
 # == Class: letsencrypt
 #
-# Full description of class letsencrypt here.
+# Include this class if you would like to create
+# Certificates or on your puppetmaster to have you CSRs signed.
+#
 #
 # === Parameters
 #
-# Document parameters here.
+# [*domains*]
+#   Array of full qualified domain names (== commonname)
+#   you want to request a certificate for.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*letsencrypt_sh_git_url*]
+#   URL used to checkout the letsencrypt.sh using git.
+#   Defaults to the upstream github url.
 #
-# === Variables
+# [*channlengetype*]
+#   Challenge type to use, default is 'dns-01'. Your letsencrypt.sh
+#   hook needs to be able to handle it.
 #
-# Here you should define a list of variables that this module would require.
+# [*hook_source*]
+#   Points to the source of the letsencrypt.sh hook you'd like to
+#   distribute ((as in file { ...: source => })
+#   hook_source or hook_content needs to be specified.
 #
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
+# [*hook_content*]
+#   The actual content (as in file { ...: content => }) of the
+#   letsencrypt.sh hook.
+#   hook_source or hook_content needs to be specified.
+#
+# [*letsencrypt_host*]
+#   The host you want to run letsencrypt.sh on.
+#   For now it needs to be a puppetmaster, as it needs direct access
+#   to the certificates using functions in puppet.
 #
 # === Examples
-#
-#  class { 'letsencrypt':
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
+#   class { 'letsencrypt' :
+#       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
+#       hook_source => 'puppet:///modules/mymodule/letsencrypt_sh_hook'
+#   }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Author Name Bernd Zeimetz <bernd@bzed.de>
 #
 # === Copyright
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 Bernd Zeimetz
 #
 class letsencrypt (
     $domains = [],

@@ -1,3 +1,29 @@
+# = Define: letsencrypt::request
+#
+# Request to sign a CSR.
+#
+# == Parameters:
+#
+# [*csr*]
+#   The full csr as string.
+#
+# [*domain*]
+#   Certificate commonname / domainname.
+#
+# [*challengetype*]
+#   challengetype letsencrypt should use.
+#
+#
+# === Authors
+#
+# Author Name Bernd Zeimetz <bernd@bzed.de>
+#
+# === Copyright
+#
+# Copyright 2016 Bernd Zeimetz
+#
+
+
 define letsencrypt::request (
     $csr,
     $challengetype,

@@ -1,3 +1,35 @@
+# == Class: letsencrypt
+#
+# Include this class if you would like to create
+# Certificates or on your puppetmaster to have you CSRs signed.
+#
+#
+# === Parameters
+#
+# [*letsencrypt_sh_git_url*]
+#   URL used to checkout the letsencrypt.sh using git.
+#   Defaults to the upstream github url.
+#
+# [*hook_source*]
+#   Points to the source of the letsencrypt.sh hook you'd like to
+#   distribute ((as in file { ...: source => })
+#   hook_source or hook_content needs to be specified.
+#
+# [*hook_content*]
+#   The actual content (as in file { ...: content => }) of the
+#   letsencrypt.sh hook.
+#   hook_source or hook_content needs to be specified.
+#
+# === Authors
+#
+# Author Name Bernd Zeimetz <bernd@bzed.de>
+#
+# === Copyright
+#
+# Copyright 2016 Bernd Zeimetz
+#
+
+
 class letsencrypt::request::handler(
     $letsencrypt_sh_git_url,
     $hook_source,

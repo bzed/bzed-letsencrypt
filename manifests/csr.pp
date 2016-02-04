@@ -1,3 +1,31 @@
+# = Define: letsencrypt::csr
+#
+# Create a CSR and ask to sign it.
+#
+# == Parameters:
+#
+# [*letsencrypt_host*]
+#   Host the certificates were signed on
+#
+# [*domain*]
+#   Certificate commonname / domainname.
+#
+# [*challengetype*]
+#   challengetype letsencrypt should use.
+#
+#  .... plus various other undocumented parameters
+#
+#
+# === Authors
+#
+# Author Name Bernd Zeimetz <bernd@bzed.de>
+#
+# === Copyright
+#
+# Copyright 2016 Bernd Zeimetz
+#
+
+
 define letsencrypt::csr(
     $letsencrypt_host,
     $challengetype,

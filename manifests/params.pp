@@ -1,3 +1,18 @@
+# == Class: letsencrypt::params
+#
+# Some basic variables we want to use.
+#
+# === Authors
+#
+# Author Name Bernd Zeimetz <bernd@bzed.de>
+#
+# === Copyright
+#
+# Copyright 2016 Bernd Zeimetz
+#
+
+
+
 class letsencrypt::params {
 
     $base_dir = '/etc/letsencrypt'
