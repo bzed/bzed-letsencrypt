@@ -1,0 +1,18 @@
+# Define: letsencrypt::request::crt
+#
+# Take certificates form facter and export a ressource
+# with the certificate content.
+#
+
+define letsencrypt::request::crt(
+    $domain = $name
+) {
+
+    $crt = getvar("::letsencrypt_crt_${domain}")
+
+    @@letsencrypt::deploy::crt { $domain :
+        crt_content => file($crt_file),
+        tag         => $::fqdn,
+    }
+
+}

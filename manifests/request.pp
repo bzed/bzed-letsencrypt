@@ -95,14 +95,4 @@ define letsencrypt::request (
 
     }
 
-    if (check_certificate($crt_file)) {
-        notify { 'certificate checked!' :
-            loglevel => err
-        }
-        @@letsencrypt::deploy::crt { $domain :
-            crt_content => file($crt_file),
-            tag         => $::fqdn,
-        }
-    }
-
 }

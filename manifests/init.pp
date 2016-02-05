@@ -90,6 +90,10 @@ class letsencrypt (
                 hook_content           => $hook_content
             }
         }
+        if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
+            $letsencrypt_crts_array = split($::letsencrypt_crts, ',')
+            letsencrypt::request::crt { $letsencrypt_crts_array : }
+        }
     }
 
 
