@@ -74,6 +74,8 @@ class letsencrypt (
     }
     file { $::letsencrypt::params::csr_dir :
     }
+    file { $::letsencrypt::params::crt_dir :
+    }
     file { $::letsencrypt::params::key_dir :
         mode    => '0750',
     }
