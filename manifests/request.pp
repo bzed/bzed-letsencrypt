@@ -75,7 +75,7 @@ define letsencrypt::request (
         '--signcsr',
         $csr_file,
         "> ${crt_file}.new",
-        "&& mv ${crt_file}.new ${crt_file}"
+        "&& /bin/mv ${crt_file}.new ${crt_file}"
     ], ' ')
 
     exec { "create-certificate-${domain}" :
