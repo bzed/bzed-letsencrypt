@@ -11,7 +11,7 @@ define letsencrypt::request::crt(
     $crt = getvar("::letsencrypt_crt_${domain}")
 
     @@letsencrypt::deploy::crt { $domain :
-        crt_content => file($crt_file),
+        crt_content => $crt,
         tag         => $::fqdn,
     }
 
