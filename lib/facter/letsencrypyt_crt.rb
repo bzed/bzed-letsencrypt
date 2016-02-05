@@ -14,16 +14,3 @@ Facter.add(:letsencrypt_crts) do
     end
 end
 
-crt_domains.each do | crt_domain |
-    Facter.add("letsencrypt_crt_" + crt_domain) do
-        setcode do
-            crt = File.read("/opt/letsencrypt/requests/#{crt_domain}/#{crt_domain}.crt")
-            if (crt =~ /.*BEGIN CERTIFICATE.*/)
-                crt
-            else
-                nil
-            end
-        end
-    end
-end
-

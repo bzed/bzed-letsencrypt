@@ -8,8 +8,14 @@ define letsencrypt::request::crt(
     $domain = $name
 ) {
 
-    $crt = getvar("::letsencrypt_crt_${domain}")
-    if ($crt) {
+    require ::letsencrypt::params
+
+    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
+    $base_dir = "${handler_requests_dir}/${domain}"
+    $crt_file = "${base_dir}/${domain}.crt"
+
+    $crt = file($crt_file)
+    if ($crt =~ /BEGIN CERTIFICATE/) {
         @@letsencrypt::deploy::crt { $domain :
             crt_content => $crt,
             tag         => $::fqdn,
