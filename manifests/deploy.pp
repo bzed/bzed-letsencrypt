@@ -26,6 +26,6 @@ define letsencrypt::deploy(
     $domain = $name
 ) {
 
-    Letsencrypt::Deploy::Crt <<| domain == $domain and tag == $letsencrypt_host |>>
+    Letsencrypt::Deploy::Crt <<| tag == $domain and tag == $letsencrypt_host |>>
 
 }
