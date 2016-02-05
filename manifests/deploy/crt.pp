@@ -39,4 +39,6 @@ define letsencrypt::deploy::crt(
         content => $crt_content,
         mode    => '0644',
     }
+    notify { 'deploy' :
+    }
 }
