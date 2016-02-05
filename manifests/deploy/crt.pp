@@ -22,22 +22,21 @@
 
 
 define letsencrypt::deploy::crt(
-    $crt_file,
+    $crt_content,
     $domain = $name
 ) {
 
     require ::letsencrypt::params
 
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
-    $base_dir = "${handler_requests_dir}/${domain}"
-    $crt      = "${base_dir}/${domain}.crt"
+    $crt_dir  = $::letsencrypt::params::crt_dir
+    $crt      = "${crt_dir}/${domain}.crt"
 
 
     file { $crt :
         ensure  => file,
         owner   => root,
         group   => letsencrypt,
-        content => file($crt_file),
+        content => $crt_content,
         mode    => '0644',
     }
 }

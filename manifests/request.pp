@@ -97,8 +97,8 @@ define letsencrypt::request (
 
     if (check_certificate($crt_file)) {
         @@letsencrypt::deploy::crt { $domain :
-            crt_file => $crt_file,
-            tag      => $::fqdn,
+            crt_content => file($crt_file),
+            tag         => $::fqdn,
         }
     }
 
