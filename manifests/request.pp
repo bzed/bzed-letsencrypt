@@ -100,7 +100,10 @@ define letsencrypt::request (
 
     exec { "get-certificate-chain-${domain}" :
         require     => File[$letsencrypt_chain_request],
-        subscribe   => Exec["create-certificate-${domain}"],
+        subscribe   => [
+            Exec["create-certificate-${domain}"],
+            File[$letsencrypt_chain_request]
+        ],
         refreshonly => true,
         user        => letsencrypt,
         group       => letsencrypt,

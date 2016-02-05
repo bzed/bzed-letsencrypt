@@ -13,7 +13,8 @@ if [ -r "${1}" -a -r "${2}" ]; then
 fi
 
 CHAINURL=$(openssl x509 -in "${1}" -noout -text | grep 'CA Issuers - URI:' | cut -d':' -f2-)
-wget -q -O "${2}.new"
+wget -q -O "${2}.new" "${CHAINURL}"
+
 if ! grep -q "BEGIN CERTIFICATE" "${2}.new"; then
     openssl x509 -in "${2}.new" -inform DER -out "${2}.new" -outform PEM
 fi
