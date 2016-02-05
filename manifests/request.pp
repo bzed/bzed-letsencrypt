@@ -81,7 +81,7 @@ define letsencrypt::request (
     exec { "create-certificate-${domain}" :
         user    => 'letsencrypt',
         group   => 'letsencrypt',
-        onlyif  => $le_check_command,
+        unless  => $le_check_command,
         command => $le_command,
         require => [
             User['letsencrypt'],
