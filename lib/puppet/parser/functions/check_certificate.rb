@@ -45,6 +45,9 @@ module Puppet::Parser::Functions
     file = File.expand_path(file)
 
     valid = File.exists?(file)
+
+    raise Puppet::ParseError, file;
+
     return valid
   end
 end
