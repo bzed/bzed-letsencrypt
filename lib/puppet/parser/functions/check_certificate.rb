@@ -44,7 +44,8 @@ module Puppet::Parser::Functions
     # We want to be sure that we have the complete path ...
     file = File.expand_path(file)
 
-    File.exists?(file)
+    valid = File.exists?(file)
+    return valid
   end
 end
 
