@@ -85,13 +85,12 @@ Defines:
 * letsencrypt::deploy
 * letsencrypt::deploy::crt
 * letsencrypt::request
+* letsencrypt::request::crt
 
 Facts:
 * letsencrypt\_csrs
 * letsencryp\_csr\_\*
-
-Parser Functions:
-* check\_certificate
+* letsencrypt\_crts
 
 ## Limitations
 

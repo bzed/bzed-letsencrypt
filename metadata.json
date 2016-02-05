@@ -1,15 +1,77 @@
 {
   "name": "bzed-letsencrypt",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Bernd Zeimetz",
   "summary": "Deploy letsencrypt certificates using letsencrypt.sh",
-  "license": "Apache 2.0",
-  "source": "https://github.com/bzed/puppet-letsencrypt",
-  "project_page": "https://github.com/bzed/puppet-letsencrypt",
-  "issues_url": "https://github.com/bzed/puppet-letsencrypt/issues",
+  "license": "Apache-2.0",
+  "source": "https://github.com/bzed/bzed-letsencrypt",
+  "project_page": "https://github.com/bzed/bzed-letsencrypt",
+  "issues_url": "https://github.com/bzed/bzed-letsencrypt/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"puppetlabs-stdlib","version_requirement":">= 2.2.0"},
     {"name":"camptocamp-openssl","version_requirement":">= 1.5.1"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "10 SP4",
+        "11 SP1",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04"
+      ]
+    }
   ]
 }
 
