@@ -40,6 +40,7 @@ define letsencrypt::request (
     $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
     $letsencrypt_hook   = $::letsencrypt::params::letsencrypt_sh_hook
+    $letsencrypt_conf   = $::letsencrypt::params::letsencrypt_sh_conf
 
     File {
         owner   => 'letsencrypt',
@@ -71,6 +72,7 @@ define letsencrypt::request (
         "-d ${domain}",
         "-k ${letsencrypt_hook}",
         "-t ${challengetype}",
+        "-f ${letsencrypt_conf}",
         '-a rsa',
         '--signcsr',
         $csr_file,

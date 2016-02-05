@@ -25,6 +25,7 @@ class letsencrypt::params {
 
     $letsencrypt_sh_dir  = "${handler_base_dir}/letsencrypt.sh"
     $letsencrypt_sh_hook = "${handler_base_dir}/letsencrypt_hook"
+    $letsencrypt_sh_conf = "${handler_base_dir}/letsencrypt.conf"
     $letsencrypt_sh      = "${letsencrypt_sh_dir}/letsencrypt.sh"
 
 }

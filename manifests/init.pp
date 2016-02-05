@@ -53,7 +53,7 @@ class letsencrypt (
     $challengetype = 'dns-01',
     $hook_source = undef,
     $hook_content = undef,
-    $letsencrypt_host = $::puppetmaster
+    $letsencrypt_host = $::puppetmaster,
 ){
 
     require ::letsencrypt::params

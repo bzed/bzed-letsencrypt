@@ -43,6 +43,7 @@ class letsencrypt::request::handler(
     $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
     $letsencrypt_sh_dir   = $::letsencrypt::params::letsencrypt_sh_dir
     $letsencrypt_sh_hook  = $::letsencrypt::params::letsencrypt_sh_hook
+    $letsencrypt_sh_conf  = $::letsencrypt::params::letsencrypt_sh_conf
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -59,7 +60,15 @@ class letsencrypt::request::handler(
 
     file { $handler_base_dir :
         ensure => directory,
-        mode   => '0755'
+        mode   => '0755',
+        owner  => 'letsencrypt',
+        group  => 'letsencrypt',
+    }
+    file { "${handler_base_dir}/.acme-challenges" :
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'letsencrypt',
+        group  => 'letsencrypt',
     }
     file { $handler_requests_dir :
         ensure => directory,
@@ -82,6 +91,14 @@ class letsencrypt::request::handler(
         source   => $letsencrypt_sh_git_url,
         user     => root,
         require  => File[$handler_base_dir]
+    }
+
+    file { $letsencrypt_sh_conf :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0640',
+        content => template('letsencrypt/letsencrypt.conf.erb')
     }
 
     Letsencrypt::Request <<| tag == $::fqdn |>>
