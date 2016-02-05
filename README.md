@@ -89,7 +89,7 @@ Defines:
 
 Facts:
 * letsencrypt\_csrs
-* letsencryp\_csr\_\*
+* letsencrypt\_csr\_\*
 * letsencrypt\_crts
 
 ## Limitations
