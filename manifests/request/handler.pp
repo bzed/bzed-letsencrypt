@@ -110,6 +110,5 @@ class letsencrypt::request::handler(
         source => 'puppet:///modules/letsencrypt/letsencrypt_get_certificate_chain.sh'
     }
 
-    files/letsencrypt_get_certificate_chain.sh
     Letsencrypt::Request <<| tag == $::fqdn |>>
 }
