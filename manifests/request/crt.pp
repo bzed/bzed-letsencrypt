@@ -16,7 +16,7 @@ define letsencrypt::request::crt(
     $crt_chain_file       = "${base_dir}/${domain}_ca.pem"
 
     $crt = file($crt_file)
-    $crt_chain = file($crt_chain_file)
+    $crt_chain = file_or_empty_string($crt_chain_file)
 
     if ($crt =~ /BEGIN CERTIFICATE/) {
         @@letsencrypt::deploy::crt { $domain :
