@@ -9,10 +9,10 @@ define letsencrypt::request::crt(
 ) {
 
     $crt = getvar("::letsencrypt_crt_${domain}")
-
-    @@letsencrypt::deploy::crt { $domain :
-        crt_content => $crt,
-        tag         => $::fqdn,
+    if ($crt) {
+        @@letsencrypt::deploy::crt { $domain :
+            crt_content => $crt,
+            tag         => $::fqdn,
+        }
     }
-
 }
