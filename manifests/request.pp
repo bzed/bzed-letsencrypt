@@ -37,10 +37,13 @@ define letsencrypt::request (
     $base_dir = "${handler_requests_dir}/${domain}"
     $csr_file = "${base_dir}/${domain}.csr"
     $crt_file = "${base_dir}/${domain}.crt"
+    $crt_chain_file     = "${base_dir}/${domain}_ca.pem"
     $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
     $letsencrypt_hook   = $::letsencrypt::params::letsencrypt_sh_hook
     $letsencrypt_conf   = $::letsencrypt::params::letsencrypt_sh_conf
+    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
+
 
     File {
         owner   => 'letsencrypt',
@@ -93,6 +96,15 @@ define letsencrypt::request (
             File[$letsencrypt_hook]
         ],
 
+    }
+
+    exec { "get-certificate-chain-${domain}" :
+        require     => File[$letsencrypt_chain_request],
+        subscribe   => Exec["create-certificate-${domain}"],
+        refreshonly => true,
+        user        => letsencrypt,
+        group       => letsencrypt,
+        command     => "${letsencrypt_chain_request} ${crt_file} ${crt_chain_file}"
     }
 
     file { $crt_file :

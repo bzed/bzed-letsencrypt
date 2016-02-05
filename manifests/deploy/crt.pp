@@ -23,13 +23,16 @@
 
 define letsencrypt::deploy::crt(
     $crt_content,
+    $crt_chain_content,
     $domain = $name
 ) {
 
     require ::letsencrypt::params
 
-    $crt_dir  = $::letsencrypt::params::crt_dir
-    $crt      = "${crt_dir}/${domain}.crt"
+    $crt_dir        = $::letsencrypt::params::crt_dir
+    $crt            = "${crt_dir}/${domain}.crt"
+    $crt_chain      = "${crt_dir}/${domain}_ca.pem"
+    $crt_full_chain = "${crt_dir}/${domain}_fullchain.pem"
 
 
     file { $crt :
@@ -38,5 +41,29 @@ define letsencrypt::deploy::crt(
         group   => letsencrypt,
         content => $crt_content,
         mode    => '0644',
+    }
+    file { $crt_chain :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        content => $crt_content,
+        mode    => '0644',
+    }
+
+    concat { $crt_full_chain :
+        owner => root,
+        group => letsencrypt,
+        mode  => '0644',
+    }
+
+    concat::fragment { "${domain}_crt" :
+        target  => $crt_full_chain,
+        content => $crt_content,
+        order   => '01',
+    }
+    concat::fragment { "${domain}_ca" :
+        target  => $crt_full_chain,
+        content => $crt_chain_content,
+        order   => '50',
     }
 }

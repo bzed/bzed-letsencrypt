@@ -28,4 +28,5 @@ class letsencrypt::params {
     $letsencrypt_sh_conf = "${handler_base_dir}/letsencrypt.conf"
     $letsencrypt_sh      = "${letsencrypt_sh_dir}/letsencrypt.sh"
 
+    $letsencrypt_chain_request = "${handler_base_dir}/letsencrypt_get_certificate_chain.sh"
 }

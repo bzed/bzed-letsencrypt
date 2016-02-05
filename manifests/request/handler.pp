@@ -44,6 +44,7 @@ class letsencrypt::request::handler(
     $letsencrypt_sh_dir   = $::letsencrypt::params::letsencrypt_sh_dir
     $letsencrypt_sh_hook  = $::letsencrypt::params::letsencrypt_sh_hook
     $letsencrypt_sh_conf  = $::letsencrypt::params::letsencrypt_sh_conf
+    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -101,5 +102,14 @@ class letsencrypt::request::handler(
         content => template('letsencrypt/letsencrypt.conf.erb')
     }
 
+    file { $letsencrypt_chain_request :
+        ensure => file,
+        owner  => root,
+        group  => letsencrypt,
+        mode   => '0755',
+        source => 'puppet:///modules/letsencrypt/letsencrypt_get_certificate_chain.sh'
+    }
+
+    files/letsencrypt_get_certificate_chain.sh
     Letsencrypt::Request <<| tag == $::fqdn |>>
 }
