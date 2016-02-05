@@ -69,7 +69,7 @@ define letsencrypt::request (
     $le_command = join([
         $letsencrypt_sh,
         "-d ${domain}",
-        "-f ${letsencrypt_hook}",
+        "-k ${letsencrypt_hook}",
         "-t ${challengetype}",
         '-a rsa',
         '--signcsr',
