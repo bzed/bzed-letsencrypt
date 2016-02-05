@@ -1,6 +1,6 @@
 {
   "name": "bzed-letsencrypt",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Bernd Zeimetz",
   "summary": "Deploy letsencrypt certificates using letsencrypt.sh",
   "license": "Apache 2.0",
