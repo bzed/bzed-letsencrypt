@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -e
+set -e
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 if [ $# -ne 2 ]; then exit 255; fi
