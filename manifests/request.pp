@@ -53,7 +53,7 @@ define letsencrypt::request (
 
     file { $base_dir :
         ensure => directory,
-        mode   => '0750'
+        mode   => '0755'
     }
 
     file { $csr_file :
@@ -95,4 +95,9 @@ define letsencrypt::request (
 
     }
 
+    file { $crt_file :
+        mode    => '0644',
+        replace => false,
+        require => Exec["create-certificate-${domain}"]
+    }
 }
