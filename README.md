@@ -54,12 +54,25 @@ In the best case: add the letsencrupt class and override $domains
 with a list of domains you want to get certificates for.
 
 ## Usage
+On a puppet node where you need your certificates:
 ~~~puppet
     class { 'letsencrypt' :
         domains     => [ 'foo.example.com', 'fuzz.example.com' ],
+    }
+~~~
+Key and CSR will be generated on your node and the CSR
+is shipped to your puppetmaster for signing.
+
+On your puppetmaster:
+~~~puppet
+    class { 'letsencrypt' :
         hook_source => 'puppet:///modules/mymodule/letsencrypt_sh_hook'
     }
 ~~~
+CSRs are collected and signed, and the resulting
+certificates and CA chain files are shipped back to your node.
+
+
 ## Reference
 
 Classes:
