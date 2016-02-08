@@ -42,13 +42,6 @@ define letsencrypt::deploy::crt(
         content => $crt_content,
         mode    => '0644',
     }
-    file { $crt_chain :
-        ensure  => file,
-        owner   => root,
-        group   => letsencrypt,
-        content => $crt_content,
-        mode    => '0644',
-    }
 
     concat { $crt_full_chain :
         owner => root,
@@ -61,9 +54,19 @@ define letsencrypt::deploy::crt(
         content => $crt_content,
         order   => '01',
     }
-    concat::fragment { "${domain}_ca" :
-        target  => $crt_full_chain,
-        content => $crt_chain_content,
-        order   => '50',
+
+    if ($crt_chain_content and $crt_chain_content =~ /BEGIN CERTIFICATE/) {
+        file { $crt_chain :
+            ensure  => file,
+            owner   => root,
+            group   => letsencrypt,
+            content => $crt_chain_content,
+            mode    => '0644',
+        }
+        concat::fragment { "${domain}_ca" :
+            target  => $crt_full_chain,
+            content => $crt_chain_content,
+            order   => '50',
+        }
     }
 }
