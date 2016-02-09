@@ -80,6 +80,7 @@ define letsencrypt::csr(
     ssl_pkey { $key :
         ensure   => $ensure,
         password => $password,
+        require  => File[$key_dir]
     }
     x509_request { $csr :
         ensure      => $ensure,
