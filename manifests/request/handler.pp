@@ -51,12 +51,12 @@ class letsencrypt::request::handler(
         home       => $handler_base_dir,
         shell      => '/bin/bash',
         managehome => false,
-        password   => '!!'
+        password   => '!!',
     }
 
     File {
         owner => root,
-        group => root
+        group => root,
     }
 
     file { $handler_base_dir :
@@ -82,7 +82,7 @@ class letsencrypt::request::handler(
         require => Group['letsencrypt'],
         source  => $hook_source,
         content => $hook_content,
-        mode    => '0750'
+        mode    => '0750',
     }
 
     vcsrepo { $letsencrypt_sh_dir :
@@ -91,7 +91,7 @@ class letsencrypt::request::handler(
         provider => git,
         source   => $letsencrypt_sh_git_url,
         user     => root,
-        require  => File[$handler_base_dir]
+        require  => File[$handler_base_dir],
     }
 
     file { $letsencrypt_sh_conf :
@@ -99,7 +99,7 @@ class letsencrypt::request::handler(
         owner   => root,
         group   => letsencrypt,
         mode    => '0640',
-        content => template('letsencrypt/letsencrypt.conf.erb')
+        content => template('letsencrypt/letsencrypt.conf.erb'),
     }
 
     file { $letsencrypt_chain_request :
@@ -107,7 +107,7 @@ class letsencrypt::request::handler(
         owner  => root,
         group  => letsencrypt,
         mode   => '0755',
-        source => 'puppet:///modules/letsencrypt/letsencrypt_get_certificate_chain.sh'
+        source => 'puppet:///modules/letsencrypt/letsencrypt_get_certificate_chain.sh',
     }
 
     Letsencrypt::Request <<| tag == $::fqdn |>>

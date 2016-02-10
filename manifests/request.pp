@@ -52,23 +52,23 @@ define letsencrypt::request (
         require => [
             User['letsencrypt'],
             Group['letsencrypt']
-        ]
+        ],
     }
 
     file { $base_dir :
         ensure => directory,
-        mode   => '0755'
+        mode   => '0755',
     }
 
     file { $csr_file :
         ensure  => file,
         content => $csr,
-        mode    => '0640'
+        mode    => '0640',
     }
 
     $le_check_command = join([
         "/usr/bin/test -f ${crt_file}",
-        "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}"
+        "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
     ], ' && ')
 
     $le_command = join([
@@ -81,7 +81,7 @@ define letsencrypt::request (
         '--signcsr',
         $csr_file,
         "> ${crt_file}.new",
-        "&& /bin/mv ${crt_file}.new ${crt_file}"
+        "&& /bin/mv ${crt_file}.new ${crt_file}",
     ], ' ')
 
     exec { "create-certificate-${domain}" :
@@ -109,7 +109,7 @@ define letsencrypt::request (
         group       => letsencrypt,
         command     => "${letsencrypt_chain_request} ${crt_file} ${crt_chain_file}",
         timeout     => 5*60,
-        tries       => 2
+        tries       => 2,
     }
 
     $create_dh_file_unless = join([
@@ -124,7 +124,7 @@ define letsencrypt::request (
         '-gt',
         '$(',
         "/bin/date --date='1 month ago' '+%s'",
-        ')'
+        ')',
     ], ' ')
 
     exec { "create-dh-${dh_file}" :
@@ -143,6 +143,6 @@ define letsencrypt::request (
     file { $crt_file :
         mode    => '0644',
         replace => false,
-        require => Exec["create-certificate-${domain}"]
+        require => Exec["create-certificate-${domain}"],
     }
 }
