@@ -67,7 +67,7 @@ class letsencrypt (
         owner   => 'root',
         group   => 'letsencrypt',
         mode    => '0755',
-        require => Group['letsencrypt']
+        require => Group['letsencrypt'],
     }
 
     file { $::letsencrypt::params::base_dir :
@@ -83,13 +83,13 @@ class letsencrypt (
     if ($::fqdn == $letsencrypt_host) {
         if !($hook_source or $hook_content) {
             notify { '$hook_source or $hook_content needs to be specified!' :
-                loglevel => err
+                loglevel => err,
             }
         } else {
             class { '::letsencrypt::request::handler' :
                 letsencrypt_sh_git_url => $letsencrypt_sh_git_url,
                 hook_source            => $hook_source,
-                hook_content           => $hook_content
+                hook_content           => $hook_content,
             }
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
@@ -100,11 +100,11 @@ class letsencrypt (
 
 
     letsencrypt::deploy { $domains :
-        letsencrypt_host => $letsencrypt_host
+        letsencrypt_host => $letsencrypt_host,
     }
     letsencrypt::csr { $domains :
         letsencrypt_host => $letsencrypt_host,
-        challengetype    => $challengetype
+        challengetype    => $challengetype,
     }
 
 }

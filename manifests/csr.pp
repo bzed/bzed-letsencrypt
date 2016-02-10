@@ -74,13 +74,13 @@ define letsencrypt::csr(
         owner   => 'root',
         group   => 'letsencrypt',
         mode    => '0644',
-        content => template('letsencrypt/cert.cnf.erb')
+        content => template('letsencrypt/cert.cnf.erb'),
     }
 
     ssl_pkey { $key :
         ensure   => $ensure,
         password => $password,
-        require  => File[$key_dir]
+        require  => File[$key_dir],
     }
     x509_request { $csr :
         ensure      => $ensure,
@@ -88,7 +88,7 @@ define letsencrypt::csr(
         private_key => $key,
         password    => $password,
         force       => $force,
-        require     => File[$cnf]
+        require     => File[$cnf],
     }
 
     file { $key :
@@ -96,14 +96,14 @@ define letsencrypt::csr(
         owner   => 'root',
         group   => 'letsencrypt',
         mode    => '0640',
-        require => Ssl_pkey[$key]
+        require => Ssl_pkey[$key],
     }
     file { $csr :
         ensure  => $ensure,
         owner   => 'root',
         group   => 'letsencrypt',
         mode    => '0644',
-        require => X509_request[$csr]
+        require => X509_request[$csr],
     }
 
     $csr_content = getvar("::letsencrypt_csr_${domain}")
@@ -111,7 +111,7 @@ define letsencrypt::csr(
         @@letsencrypt::request { $domain :
             csr           => $csr_content,
             tag           => $letsencrypt_host,
-            challengetype => $challengetype
+            challengetype => $challengetype,
         }
     } else {
         notify { "no CSR from facter for domain ${domain}" : }
