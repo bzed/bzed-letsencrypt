@@ -116,5 +116,5 @@ define letsencrypt::csr(
     } else {
         notify { "no CSR from facter for domain ${domain}" : }
     }
-    
+
 }
