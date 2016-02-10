@@ -32,9 +32,11 @@ https://github.com/lukas2511/letsencrypt.sh
 Signed certificates are shipped back to the appropriate host.
 
 You need to provide an appropriate hook script for letsencryt.sh,
-The default is to use the dns-01 challenge, but if you hook
+The default is to use the DNS-01 challenge, but if you hook
 supports it you could also create the necessary files for http-01.
 
+Various examples for valid DNS-01 hooks are listed on
+https://github.com/lukas2511/letsencrypt.sh/wiki/Examples-for-DNS-01-hooks
 
 ## Setup
 
