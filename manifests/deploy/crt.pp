@@ -4,8 +4,14 @@
 #
 # == Parameters:
 #
-# [*crt_file*]
-#   File which contains the crt.
+# [*crt_content*]
+#   actual certificate content.
+#
+# [*crt_chain_content*]
+#   actual certificate chain file content.
+#
+# [*dh_content*]
+#   dh file content.
 #
 # [*domain*]
 #   Certificate commonname / domainname.
