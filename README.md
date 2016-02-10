@@ -1,5 +1,8 @@
 # letsencrypt
 
+[![Puppet Forge](http://img.shields.io/puppetforge/v/bzed/letsencrypt.svg)](https://forge.puppetlabs.com/bzed/letsencrypt) [![Build Status](https://travis-ci.org/bzed/bzed-letsencrypt.png?branch=master)](https://travis-ci.org/bzed/bzed-letsencrypt)
+
+
 #### Table of Contents
 
 1. [Overview](#overview)
