@@ -96,7 +96,6 @@ define letsencrypt::request (
             Vcsrepo[$letsencrypt_sh_dir],
             File[$letsencrypt_hook]
         ],
-
     }
 
     exec { "get-certificate-chain-${domain}" :
@@ -108,7 +107,9 @@ define letsencrypt::request (
         refreshonly => true,
         user        => letsencrypt,
         group       => letsencrypt,
-        command     => "${letsencrypt_chain_request} ${crt_file} ${crt_chain_file}"
+        command     => "${letsencrypt_chain_request} ${crt_file} ${crt_chain_file}",
+        timeout     => 5*60,
+        tries       => 2
     }
 
     $create_dh_file_unless = join([
@@ -135,7 +136,8 @@ define letsencrypt::request (
         user    => letsencrypt,
         group   => letsencrypt,
         command => "/usr/bin/openssl dhparam -check -text 4096 -out ${dh_file}",
-        unless  => $create_dh_file_unless
+        unless  => $create_dh_file_unless,
+        timeout => 15*60,
     }
 
     file { $crt_file :
