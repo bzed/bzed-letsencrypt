@@ -1,8 +1,8 @@
 {
   "name": "bzed-letsencrypt",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Bernd Zeimetz",
-  "summary": "Deploy letsencrypt certificates using letsencrypt.sh",
+  "summary": "Centralized CSR signing using letsencrypt - keeping your keys safe on the host they belong to",
   "license": "Apache-2.0",
   "source": "https://github.com/bzed/bzed-letsencrypt",
   "project_page": "https://github.com/bzed/bzed-letsencrypt",
