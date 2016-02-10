@@ -24,6 +24,7 @@
 define letsencrypt::deploy::crt(
     $crt_content,
     $crt_chain_content,
+    $dh_content,
     $domain = $name
 ) {
 
@@ -31,6 +32,7 @@ define letsencrypt::deploy::crt(
 
     $crt_dir        = $::letsencrypt::params::crt_dir
     $crt            = "${crt_dir}/${domain}.crt"
+    $dh             = "${crt_dir}/${domain}.dh"
     $crt_chain      = "${crt_dir}/${domain}_ca.pem"
     $crt_full_chain = "${crt_dir}/${domain}_fullchain.pem"
 
@@ -43,6 +45,7 @@ define letsencrypt::deploy::crt(
         mode    => '0644',
     }
 
+
     concat { $crt_full_chain :
         owner => root,
         group => letsencrypt,
@@ -53,6 +56,21 @@ define letsencrypt::deploy::crt(
         target  => $crt_full_chain,
         content => $crt_content,
         order   => '01',
+    }
+
+    if ($dh_content and $dh_content =~ /BEGIN DH PARAMETERS/) {
+        file { $dh :
+            ensure  => file,
+            owner   => root,
+            group   => letsencrypt,
+            content => $dh_content,
+            mode    => '0644',
+        }
+        concat::fragment { "${domain}_dh" :
+            target  => $crt_full_chain,
+            content => $dh_content,
+            order   => '30',
+        }
     }
 
     if ($crt_chain_content and $crt_chain_content =~ /BEGIN CERTIFICATE/) {
