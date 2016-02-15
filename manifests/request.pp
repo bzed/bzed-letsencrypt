@@ -137,7 +137,7 @@ define letsencrypt::request (
         group   => letsencrypt,
         command => "/usr/bin/openssl dhparam -check -text 4096 -out ${dh_file}",
         unless  => $create_dh_file_unless,
-        timeout => 15*60,
+        timeout => 30*60,
     }
 
     file { $crt_file :
