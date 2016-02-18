@@ -18,9 +18,7 @@
 
 ## Overview
 
-bzed-letsencrypy is a flexible wrapper around certificate
-creation and signing around letsencrypt.sh - with the
-advantage that you private keys are never shipped by puppet.
+Centralized CSR signing using letsencrypt - keeping your keys safe on the host they belong to.
 
 ## Module Description
 
