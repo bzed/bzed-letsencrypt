@@ -36,12 +36,14 @@ define letsencrypt::deploy::crt(
 
     require ::letsencrypt::params
 
-    $crt_dir        = $::letsencrypt::params::crt_dir
-    $crt            = "${crt_dir}/${domain}.crt"
-    $dh             = "${crt_dir}/${domain}.dh"
-    $crt_chain      = "${crt_dir}/${domain}_ca.pem"
-    $crt_full_chain = "${crt_dir}/${domain}_fullchain.pem"
-
+    $crt_dir                 = $::letsencrypt::params::crt_dir
+    $key_dir                 = $::letsencrypt::params::key_dir
+    $crt                     = "${crt_dir}/${domain}.crt"
+    $key                     = "${key_dir}/${domain}.key"
+    $dh                      = "${crt_dir}/${domain}.dh"
+    $crt_chain               = "${crt_dir}/${domain}_ca.pem"
+    $crt_full_chain          = "${crt_dir}/${domain}_fullchain.pem"
+    $crt_full_chain_with_key = "${key_dir}/${domain}_fullchain_with_key.pem"
 
     file { $crt :
         ensure  => file,
@@ -49,13 +51,34 @@ define letsencrypt::deploy::crt(
         group   => letsencrypt,
         content => $crt_content,
         mode    => '0644',
+        notify  => Exec["update-${crt_full_chain}-with-key"],
     }
 
+    $create_full_chain_with_key_command = join([
+        '/bin/cat',
+        $key,
+        $crt_full_chain,
+        '>',
+        "${crt_full_chain_with_key}.new",
+        '&&',
+        '/bin/mv',
+        "${crt_full_chain_with_key}.new",
+        $crt_full_chain_with_key,
+    ], ' ')
+
+    exec { "update-${crt_full_chain}-with-key" :
+        user        => root,
+        group       => letsencrypt,
+        umask       => '0027',
+        refreshonly => true,
+        command     => $create_full_chain_with_key_command,
+    }
 
     concat { $crt_full_chain :
-        owner => root,
-        group => letsencrypt,
-        mode  => '0644',
+        owner  => root,
+        group  => letsencrypt,
+        mode   => '0644',
+        notify => Exec["update-${crt_full_chain}-with-key"],
     }
 
     concat::fragment { "${domain}_crt" :
