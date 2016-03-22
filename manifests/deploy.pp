@@ -7,10 +7,6 @@
 # [*letsencrypt_host*]
 #   Host the certificates were signed on
 #
-# [*domain*]
-#   Certificate commonname / domainname.
-#
-#
 # === Authors
 #
 # Author Name Bernd Zeimetz <bernd@bzed.de>
@@ -23,8 +19,10 @@
 
 define letsencrypt::deploy(
     $letsencrypt_host,
-    $domain = $name
 ) {
+
+    $domains = split($name, ' ')
+    $domain = $domains[0]
 
     Letsencrypt::Deploy::Crt <<| tag == $domain and tag == $letsencrypt_host |>>
 

@@ -9,6 +9,8 @@
 # [*domains*]
 #   Array of full qualified domain names (== commonname)
 #   you want to request a certificate for.
+#   For SAN certificates you need to pass space seperated strings,
+#   for example ['foo.example.com fuzz.example.com', 'blub.example.com']
 #
 # [*letsencrypt_sh_git_url*]
 #   URL used to checkout the letsencrypt.sh using git.

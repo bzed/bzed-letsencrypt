@@ -7,9 +7,6 @@
 # [*letsencrypt_host*]
 #   Host the certificates were signed on
 #
-# [*domain*]
-#   Certificate commonname / domainname.
-#
 # [*challengetype*]
 #   challengetype letsencrypt should use.
 #
@@ -29,7 +26,7 @@
 define letsencrypt::csr(
     $letsencrypt_host,
     $challengetype,
-    $domain = $name,
+    $domain_list = $name,
     $country = undef,
     $state = undef,
     $locality = undef,
@@ -43,25 +40,34 @@ define letsencrypt::csr(
 ) {
     require ::letsencrypt::params
 
-    $base_dir = $::letsencrypt::params::base_dir
-    $csr_dir  = $::letsencrypt::params::csr_dir
-    $key_dir  = $::letsencrypt::params::key_dir
-    $crt_dir  = $::letsencrypt::params::crt_dir
-
-    $cnf = "${base_dir}/${domain}.cnf"
-    $crt = "${crt_dir}/${domain}.crt"
-    $key = "${key_dir}/${domain}.key"
-    $csr = "${csr_dir}/${domain}.csr"
-
     validate_string($country)
     validate_string($organization)
-    validate_string($domain)
+    validate_string($domain_list)
     validate_string($ensure)
     validate_string($state)
     validate_string($locality)
     validate_string($unit)
     validate_array($altnames)
     validate_string($email)
+
+    $base_dir = $::letsencrypt::params::base_dir
+    $csr_dir  = $::letsencrypt::params::csr_dir
+    $key_dir  = $::letsencrypt::params::key_dir
+    $crt_dir  = $::letsencrypt::params::crt_dir
+
+    $domains = split($domain_list, ' ')
+    $domain = $domains[0]
+    if (size(domains) > 1) {
+        $san_domains = delete_at($domains, 0)
+    } else {
+        $san_domains = []
+    }
+
+    $cnf = "${base_dir}/${domain}.cnf"
+    $crt = "${crt_dir}/${domain}.crt"
+    $key = "${key_dir}/${domain}.key"
+    $csr = "${csr_dir}/${domain}.csr"
+
 
     if !empty($altnames) {
         $req_ext = true
@@ -112,6 +118,7 @@ define letsencrypt::csr(
             csr           => $csr_content,
             tag           => $letsencrypt_host,
             challengetype => $challengetype,
+            san_domains   => $san_domains
         }
     } else {
         notify { "no CSR from facter for domain ${domain}" : }

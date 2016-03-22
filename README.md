@@ -33,9 +33,6 @@ You need to provide an appropriate hook script for letsencryt.sh,
 The default is to use the DNS-01 challenge, but if you hook
 supports it you could also create the necessary files for http-01.
 
-Various examples for valid DNS-01 hooks are listed on
-https://github.com/lukas2511/letsencrypt.sh/wiki/Examples-for-DNS-01-hooks
-
 ## Setup
 
 ### What letsencrypt affects
@@ -57,6 +54,7 @@ In the best case: add the letsencrupt class and override $domains
 with a list of domains you want to get certificates for.
 
 ## Usage
+### On puppet nodes
 On a puppet node where you need your certificates:
 ~~~puppet
     class { 'letsencrypt' :
@@ -66,7 +64,26 @@ On a puppet node where you need your certificates:
 Key and CSR will be generated on your node and the CSR
 is shipped to your puppetmaster for signing.
 
-On your puppetmaster:
+#### SAN Certificates
+Requesting SAN certificates is also possible. To do so pass a
+space seperated list of domainnames into the domains array.
+The first domainname in each list is used as the base domain
+for the request. For example:
+~~~puppet
+    class { 'letsencrypt' :
+        domains     => [
+            'foo.example.com bar.example.com good.example.com',
+            'fuzz.example.com'
+        ],
+    }
+~~~
+
+### On your puppetmaster:
+What you need to prepare is a hook you want to use with letsencrypt.sh
+as you need to deploy the challenges somehow. Various examples for
+valid DNS-01 hooks are listed on
+https://github.com/lukas2511/letsencrypt.sh/wiki/Examples-for-DNS-01-hooks
+
 ~~~puppet
     class { 'letsencrypt' :
         hook_source => 'puppet:///modules/mymodule/letsencrypt_sh_hook'
