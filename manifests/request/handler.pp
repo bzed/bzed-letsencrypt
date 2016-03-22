@@ -32,9 +32,9 @@
 
 class letsencrypt::request::handler(
     $letsencrypt_sh_git_url,
+    $letsencrypt_ca,
     $hook_source,
     $hook_content
-
 ){
 
     require ::letsencrypt::params

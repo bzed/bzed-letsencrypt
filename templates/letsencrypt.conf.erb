@@ -1,19 +1,10 @@
 #!/bin/bash
 
-########################################################
-# This is the main config file for letsencrypt.sh      #
-#                                                      #
-# This file is looked for in the following locations:  #
-# $SCRIPTDIR/config.sh (next to this script)           #
-# /usr/local/etc/letsencrypt.sh/config.sh              #
-# /etc/letsencrypt.sh/config.sh                        #
-# ${PWD}/config.sh (in current working-directory)      #
-#                                                      #
-# Default values of this config are in comments        #
-########################################################
+### MANAGED BY PUPPET - DO NOT HAND HACK!
+
 
 # Path to certificate authority (default: https://acme-v01.api.letsencrypt.org/directory)
-#CA="https://acme-v01.api.letsencrypt.org/directory"
+CA="<%= @letsencrypt_ca -%>"
 
 # Path to license agreement (default: https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf)
 #LICENSE="https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf"
@@ -28,7 +19,7 @@
 #CONFIG_D=
 
 # Base directory for account key, generated certificates and list of domains (default: $SCRIPTDIR -- uses config directory if undefined)
-BASEDIR=<%= handler_base_dir %>
+BASEDIR="<%= @handler_base_dir -%>"
 
 # Output directory for challenge-tokens to be served by webserver or deployed in HOOK (default: $BASEDIR/.acme-challenges)
 #WELLKNOWN="${BASEDIR}/.acme-challenges"
