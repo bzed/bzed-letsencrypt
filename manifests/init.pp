@@ -35,6 +35,10 @@
 #   For now it needs to be a puppetmaster, as it needs direct access
 #   to the certificates using functions in puppet.
 #
+# [*letsencrypt_ca*]
+#   The letsencrypt CA you want to use. For debugging you want to
+#   set it to 'https://acme-staging.api.letsencrypt.org/directory'
+#
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],

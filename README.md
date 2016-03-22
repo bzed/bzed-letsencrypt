@@ -92,6 +92,17 @@ https://github.com/lukas2511/letsencrypt.sh/wiki/Examples-for-DNS-01-hooks
 CSRs are collected and signed, and the resulting
 certificates and CA chain files are shipped back to your node.
 
+#### Testing and Debugging
+For testing purposes you want to use the staging CA, otherwise
+you'll hit rate limits pretty soon. To do s set the letsencrypt\_ca
+option:
+~~~puppet
+    class { 'letsencrypt' :
+        hook_source    => 'puppet:///modules/mymodule/letsencrypt_sh_hook',
+        letsencrypt_ca => 'https://acme-staging.api.letsencrypt.org/directory',
+    }
+~~~
+
 
 ## Reference
 
