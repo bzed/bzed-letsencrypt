@@ -58,11 +58,11 @@ define letsencrypt::csr(
     if (size(domains) > 1) {
         $req_ext = true
         $altnames = delete_at($domains, 0)
-        $subject_alt_names = join($domains, ', ')
+        $subject_alt_names = $domains
     } else {
         $req_ext = false
         $altnames = []
-        $subject_alt_names = ''
+        $subject_alt_names = []
     }
 
     $cnf = "${base_dir}/${domain}.cnf"

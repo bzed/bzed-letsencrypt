@@ -1,7 +1,4 @@
 # file managed by puppet
-#
-# SSLeay example configuration file.
-#
 
 # This definition stops the following lines choking if HOME isn't
 # defined.
@@ -15,7 +12,7 @@ default_keyfile         = privkey.pem
 distinguished_name      = req_distinguished_name
 prompt                  = no
 <% if @req_ext -%>
-req_extensions          = req_ext
+req_extensions          = v3_req
 <% end -%>
 
 [ req_distinguished_name ]
@@ -40,7 +37,15 @@ emailAddress                    = <%= @email %>
 <% end -%>
 
 <% if @req_ext -%>
-[ req_ext ]
-subjectAltName = "DNS: <%= @subject_alt_names -%>"
+[ v3_req ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+<%- i=1 -%>
+<% @subject_alt_names.each do |val| -%>
+DNS.<%= i -%> = <%= val %>
+<%- i = i+1 -%>
+<% end -%>
+
 <% end %>
 

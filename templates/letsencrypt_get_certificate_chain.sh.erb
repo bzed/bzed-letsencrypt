@@ -3,7 +3,17 @@
 set -e
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-if [ $# -ne 2 ]; then exit 255; fi
+<% if @letsencrypt_proxy -%>
+export http_proxy="<%= @letsencrypt_proxy -%>"
+export https_proxy="<%= @letsencrypt_proxy -%>"
+<% end -%>
+
+if [ $# -lt 2 ]; then exit 255; fi
+
+if [ $# -gt 2 ]; then
+    export http_proxy="${3}"
+    export https_proxy="${3}"
+fi
 
 # exit if both files exist and the chain file is more recent.
 if [ -r "${1}" -a -r "${2}" ]; then

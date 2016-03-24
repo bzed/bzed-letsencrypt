@@ -122,11 +122,11 @@ class letsencrypt::request::handler(
     }
 
     file { $letsencrypt_chain_request :
-        ensure => file,
-        owner  => root,
-        group  => letsencrypt,
-        mode   => '0755',
-        source => 'puppet:///modules/letsencrypt/letsencrypt_get_certificate_chain.sh',
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb')
     }
 
     Letsencrypt::Request <<| tag == $::fqdn |>>
