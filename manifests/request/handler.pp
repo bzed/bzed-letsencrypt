@@ -126,7 +126,7 @@ class letsencrypt::request::handler(
         owner   => root,
         group   => letsencrypt,
         mode    => '0755',
-        content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb')
+        content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb'),
     }
 
     Letsencrypt::Request <<| tag == $::fqdn |>>
