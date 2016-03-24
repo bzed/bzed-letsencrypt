@@ -1,6 +1,6 @@
 {
   "name": "bzed-letsencrypt",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "author": "Bernd Zeimetz",
   "summary": "Centralized CSR signing using letsencrypt - keeping your keys safe on the host they belong to",
   "license": "Apache-2.0",
