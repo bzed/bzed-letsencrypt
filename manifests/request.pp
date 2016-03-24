@@ -84,7 +84,7 @@ define letsencrypt::request (
     )
     $le_command = join([
         $letsencrypt_sh,
-        $domain_options,
+        "-d ${domain}",
         "-k ${letsencrypt_sh_hook}",
         "-t ${challengetype}",
         "-f ${letsencrypt_sh_conf}",

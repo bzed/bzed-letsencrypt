@@ -58,7 +58,7 @@ define letsencrypt::csr(
     if (size(domains) > 1) {
         $req_ext = true
         $altnames = delete_at($domains, 0)
-        $subject_alt_names = join($altnames, ', ')
+        $subject_alt_names = join($domains, ', ')
     } else {
         $req_ext = false
         $altnames = []
