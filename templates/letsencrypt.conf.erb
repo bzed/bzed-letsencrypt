@@ -67,3 +67,11 @@ CONTACT_EMAIL=<%= @lentsencrypt_contact_email %>
 # Lockfile location, to prevent concurrent access (default: $BASEDIR/lock)
 #LOCKFILE="${BASEDIR}/lock"
 
+# use proxy settings if necessary.
+<%if @letsencrypt_proxy -%>
+http_proxy="<%= @letsencrypt_proxy -%>"
+https_proxy="<%= @letsencrypt_proxy -%>"
+export http_proxy
+export https_proxy
+<%- end %>
+

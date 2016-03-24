@@ -36,6 +36,7 @@ class letsencrypt::request::handler(
     $hook_source,
     $hook_content,
     $lentsencrypt_contact_email,
+    $letsencrypt_proxy,
 ){
 
     require ::letsencrypt::params

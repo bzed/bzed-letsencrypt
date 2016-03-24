@@ -43,6 +43,10 @@
 #   E-mail to use during the letsencrypt account registration.
 #   If undef, no email address is being used.
 #
+# [*letsencrypt_proxy*]
+#   Proxyserver to use to connect to the letsencrypt CA
+#   for example '127.0.0.1:3128'
+#
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
@@ -66,6 +70,7 @@ class letsencrypt (
     $letsencrypt_host = $::puppetmaster,
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
     $lentsencrypt_contact_email = undef,
+    $letsencrypt_proxy = undef,
 ){
 
     require ::letsencrypt::params
@@ -104,6 +109,7 @@ class letsencrypt (
                 hook_source                => $hook_source,
                 hook_content               => $hook_content,
                 lentsencrypt_contact_email => $lentsencrypt_contact_email,
+                letsencrypt_proxy          => $letsencrypt_proxy,
             }
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
