@@ -56,22 +56,19 @@ define letsencrypt::csr(
     $domains = split($domain_list, ' ')
     $domain = $domains[0]
     if (size(domains) > 1) {
+        $req_ext = true
         $altnames = delete_at($domains, 0)
+        $subject_alt_names = join($altnames, ', ')
     } else {
+        $req_ext = false
         $altnames = []
+        $subject_alt_names = ''
     }
 
     $cnf = "${base_dir}/${domain}.cnf"
     $crt = "${crt_dir}/${domain}.crt"
     $key = "${key_dir}/${domain}.key"
     $csr = "${csr_dir}/${domain}.csr"
-
-
-    if !empty($altnames) {
-        $req_ext = true
-    } else {
-        $req_ext = false
-    }
 
     file { $cnf :
         ensure  => $ensure,
