@@ -55,7 +55,11 @@ BASEDIR="<%= @handler_base_dir -%>"
 #KEY_ALGO=rsa
 
 # E-mail to use during the registration (default: <unset>)
+<% if @lentsencrypt_contact_email -%>
+CONTACT_EMAIL=<%= @lentsencrypt_contact_email %>
+<%- else -%>
 #CONTACT_EMAIL=
+<%- end %>
 
 # Lockfile location, to prevent concurrent access (default: $BASEDIR/lock)
 #LOCKFILE="${BASEDIR}/lock"

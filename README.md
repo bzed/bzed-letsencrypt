@@ -125,10 +125,10 @@ Facts:
 
 ## Limitations
 
-Not really well tested yet, no spec tests....
+Not really well tested yet, documentation missing, no spec tests....
 
 ## Development
 
 Patches are very welcome!
-
+Please send your pull requests on github!
 

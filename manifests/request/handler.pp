@@ -34,7 +34,8 @@ class letsencrypt::request::handler(
     $letsencrypt_sh_git_url,
     $letsencrypt_ca,
     $hook_source,
-    $hook_content
+    $hook_content,
+    $lentsencrypt_contact_email,
 ){
 
     require ::letsencrypt::params

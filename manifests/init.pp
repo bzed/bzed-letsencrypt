@@ -39,6 +39,10 @@
 #   The letsencrypt CA you want to use. For debugging you want to
 #   set it to 'https://acme-staging.api.letsencrypt.org/directory'
 #
+# [*letsencrypt_contact_email*]
+#   E-mail to use during the letsencrypt account registration.
+#   If undef, no email address is being used.
+#
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
@@ -61,6 +65,7 @@ class letsencrypt (
     $hook_content = undef,
     $letsencrypt_host = $::puppetmaster,
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
+    $lentsencrypt_contact_email = undef,
 ){
 
     require ::letsencrypt::params
@@ -94,10 +99,11 @@ class letsencrypt (
             }
         } else {
             class { '::letsencrypt::request::handler' :
-                letsencrypt_sh_git_url => $letsencrypt_sh_git_url,
-                letsencrypt_ca         => $letsencrypt_ca,
-                hook_source            => $hook_source,
-                hook_content           => $hook_content,
+                letsencrypt_sh_git_url     => $letsencrypt_sh_git_url,
+                letsencrypt_ca             => $letsencrypt_ca,
+                hook_source                => $hook_source,
+                hook_content               => $hook_content,
+                lentsencrypt_contact_email => $lentsencrypt_contact_email,
             }
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
