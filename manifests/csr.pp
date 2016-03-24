@@ -33,7 +33,6 @@ define letsencrypt::csr(
     $organization = undef,
     $unit = undef,
     $email = undef,
-    $altnames = [],
     $password = undef,
     $ensure = 'present',
     $force = true,
@@ -47,7 +46,6 @@ define letsencrypt::csr(
     validate_string($state)
     validate_string($locality)
     validate_string($unit)
-    validate_array($altnames)
     validate_string($email)
 
     $base_dir = $::letsencrypt::params::base_dir
@@ -58,9 +56,9 @@ define letsencrypt::csr(
     $domains = split($domain_list, ' ')
     $domain = $domains[0]
     if (size(domains) > 1) {
-        $san_domains = delete_at($domains, 0)
+        $altnames = delete_at($domains, 0)
     } else {
-        $san_domains = []
+        $altnames = []
     }
 
     $cnf = "${base_dir}/${domain}.cnf"
@@ -118,7 +116,7 @@ define letsencrypt::csr(
             csr           => $csr_content,
             tag           => $letsencrypt_host,
             challengetype => $challengetype,
-            san_domains   => $san_domains
+            altnames      => $altnames,
         }
     } else {
         notify { "no CSR from facter for domain ${domain}" : }

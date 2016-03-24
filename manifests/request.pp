@@ -27,7 +27,7 @@
 define letsencrypt::request (
     $csr,
     $challengetype,
-    $san_domains,
+    $altnames,
     $domain = $name
 ) {
 
@@ -76,7 +76,7 @@ define letsencrypt::request (
         prefix(
             concat(
                 [$domain],
-                $san_domains
+                $altnames
             ),
             '-d '
         ),
