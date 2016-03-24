@@ -42,8 +42,8 @@ define letsencrypt::request (
     $crt_chain_file     = "${base_dir}/${domain}_ca.pem"
     $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
-    $letsencrypt_hook   = $::letsencrypt::params::letsencrypt_sh_hook
-    $letsencrypt_conf   = $::letsencrypt::params::letsencrypt_sh_conf
+    $letsencrypt_sh_hook   = $::letsencrypt::params::letsencrypt_sh_hook
+    $letsencrypt_sh_conf   = $::letsencrypt::params::letsencrypt_sh_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
 
 
@@ -85,9 +85,9 @@ define letsencrypt::request (
     $le_command = join([
         $letsencrypt_sh,
         $domain_options,
-        "-k ${letsencrypt_hook}",
+        "-k ${letsencrypt_sh_hook}",
         "-t ${challengetype}",
-        "-f ${letsencrypt_conf}",
+        "-f ${letsencrypt_sh_conf}",
         '-a rsa',
         '--signcsr',
         $csr_file,
@@ -105,7 +105,8 @@ define letsencrypt::request (
             Group['letsencrypt'],
             File[$csr_file],
             Vcsrepo[$letsencrypt_sh_dir],
-            File[$letsencrypt_hook]
+            File[$letsencrypt_sh_hook],
+            File[$letsencrypt_sh_conf],
         ],
     }
 
