@@ -67,13 +67,13 @@ define letsencrypt::deploy::crt(
     concat::fragment { "${domain}_key" :
         target => $crt_full_chain_with_key,
         source => $key,
-        order  => 01
+        order  => '01',
     }
     concat::fragment { "${domain}_fullchain" :
         target    => $crt_full_chain_with_key,
         source    => $crt_full_chain,
-        order     => 10,
-        subscribe => Concat[$crt_full_chain]
+        order     => '10',
+        subscribe => Concat[$crt_full_chain],
     }
 
     concat::fragment { "${domain}_crt" :
