@@ -18,7 +18,7 @@
 
 ## Overview
 
-Centralized CSR signing using letsencrypt - keeping your keys safe on the host they belong to.
+Centralized CSR signing using Let’s Encrypt™ - keeping your keys safe on the host they belong to.
 
 ## Module Description
 
@@ -32,6 +32,8 @@ Signed certificates are shipped back to the appropriate host.
 You need to provide an appropriate hook script for letsencryt.sh,
 The default is to use the DNS-01 challenge, but if you hook
 supports it you could also create the necessary files for http-01.
+
+Let’s Encrypt is a trademark of the Internet Security Research Group. All rights reserved.
 
 ## Setup
 
@@ -50,7 +52,7 @@ is enabled.
 
 ### Beginning with letsencrypt
 
-In the best case: add the letsencrupt class and override $domains
+In the best case: add the letsencrypt class and override $domains
 with a list of domains you want to get certificates for.
 
 ## Usage
