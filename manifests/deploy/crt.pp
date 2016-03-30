@@ -51,40 +51,35 @@ define letsencrypt::deploy::crt(
         group   => letsencrypt,
         content => $crt_content,
         mode    => '0644',
-        notify  => Exec["update-${crt_full_chain}-with-key"],
-    }
-
-    $create_full_chain_with_key_command = join([
-        '/bin/cat',
-        $key,
-        $crt_full_chain,
-        '>',
-        "${crt_full_chain_with_key}.new",
-        '&&',
-        '/bin/mv',
-        "${crt_full_chain_with_key}.new",
-        $crt_full_chain_with_key,
-    ], ' ')
-
-    exec { "update-${crt_full_chain}-with-key" :
-        user        => root,
-        group       => letsencrypt,
-        umask       => '0027',
-        refreshonly => true,
-        command     => $create_full_chain_with_key_command,
     }
 
     concat { $crt_full_chain :
-        owner  => root,
-        group  => letsencrypt,
-        mode   => '0644',
-        notify => Exec["update-${crt_full_chain}-with-key"],
+        owner => root,
+        group => letsencrypt,
+        mode  => '0644',
+    }
+    concat { $crt_full_chain_with_key :
+        owner => root,
+        group => letsencrypt,
+        mode  => '0640',
+    }
+
+    concat::fragment { "${domain}_key" :
+        target => $crt_full_chain_with_key,
+        source => $key,
+        order  => 01
+    }
+    concat::fragment { "${domain}_fullchain" :
+        target    => $crt_full_chain_with_key,
+        source    => $crt_full_chain,
+        order     => 10,
+        subscribe => Concat[$crt_full_chain]
     }
 
     concat::fragment { "${domain}_crt" :
         target  => $crt_full_chain,
         content => $crt_content,
-        order   => '01',
+        order   => '10',
     }
 
     if ($dh_content and $dh_content =~ /BEGIN DH PARAMETERS/) {
