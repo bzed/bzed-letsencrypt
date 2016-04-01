@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/bzed/bzed-letsencrypt/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 2.2.0"},
-    {"name":"puppetlabs-concat","version_requirement":">= 2.0.0"},
+    {"name":"puppetlabs-concat","version_requirement":">= 2.1.0"},
     {"name":"camptocamp-openssl","version_requirement":">= 1.5.1"}
   ],
   "operatingsystem_support": [
