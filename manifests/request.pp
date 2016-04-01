@@ -72,16 +72,6 @@ define letsencrypt::request (
         "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
     ], ' && ')
 
-    $domain_options = join(
-        prefix(
-            concat(
-                [$domain],
-                $altnames
-            ),
-            '-d '
-        ),
-        ' '
-    )
     $le_command = join([
         $letsencrypt_sh,
         "-d ${domain}",
