@@ -112,6 +112,11 @@ define letsencrypt::deploy::crt(
             content => $dh_content,
             order   => '30',
         }
+    } else {
+        file { $dh :
+            ensure => absent,
+            force  => true,
+        }
     }
 
     if ($crt_chain_content and $crt_chain_content =~ /BEGIN CERTIFICATE/) {
@@ -127,5 +132,11 @@ define letsencrypt::deploy::crt(
             content => $crt_chain_content,
             order   => '50',
         }
+    } else {
+        file { $crt_chain :
+            ensure => absent,
+            force  => true,
+        }
     }
+
 }
