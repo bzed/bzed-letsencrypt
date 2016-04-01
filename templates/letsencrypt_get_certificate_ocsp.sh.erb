@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+<% if @letsencrypt_proxy -%>
+export http_proxy="<%= @letsencrypt_proxy -%>"
+export https_proxy="<%= @letsencrypt_proxy -%>"
+<% end -%>
+
+if [ $# -lt 3 ]; then exit 255; fi
+
+OCSPURL=$(openssl x509 -in "${1}" -noout -text | grep "OCSP - URI:" | cut -d: -f2,3 )
+OCSPHOST=$(echo $OCSPURL | sed 's,^.*://\([^/]*\).*,\1,')
+
+
+<% if @letsencrypt_proxy -%>
+openssl ocsp -noverify -issuer "${2}" \
+    -cert "${1}" \
+    -host "<%= @letsencrypt_proxy -%>" \
+    -path "${OCSPURL}" -respout "${3}.new"
+<% else -%>
+openssl ocsp -noverify -issuer "${2}" \
+    -cert "${1}" \
+    -header Host "${OCSPHOST}" \
+    -url "${OCSPURL}" -respout "${3}.new"
+
+<% end -%>
+
+mv "${3}.new" "${3}"
+

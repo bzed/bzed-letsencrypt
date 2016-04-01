@@ -31,6 +31,7 @@ define letsencrypt::deploy::crt(
     $crt_content,
     $crt_chain_content,
     $dh_content,
+    $ocsp_content,
     $domain = $name
 ) {
 
@@ -39,6 +40,7 @@ define letsencrypt::deploy::crt(
     $crt_dir                 = $::letsencrypt::params::crt_dir
     $key_dir                 = $::letsencrypt::params::key_dir
     $crt                     = "${crt_dir}/${domain}.crt"
+    $ocsp                    = "${crt_dir}/${domain}.crt.ocsp"
     $key                     = "${key_dir}/${domain}.key"
     $dh                      = "${crt_dir}/${domain}.dh"
     $crt_chain               = "${crt_dir}/${domain}_ca.pem"
@@ -51,6 +53,21 @@ define letsencrypt::deploy::crt(
         group   => letsencrypt,
         content => $crt_content,
         mode    => '0644',
+    }
+
+    if !empty($ocsp_content) {
+        file { $ocsp :
+            ensure  => file,
+            owner   => root,
+            group   => letsencrypt,
+            content => base64('decode', $ocsp_content),
+            mode    => '0644',
+        }
+    } else {
+        file { $ocsp :
+            ensure => absent,
+            force  => true,
+        }
     }
 
     concat { $crt_full_chain :

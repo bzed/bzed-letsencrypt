@@ -110,6 +110,11 @@ define letsencrypt::request (
         ],
     }
 
+    $get_certificate_chain_command = join([
+        $letsencrypt_chain_request,
+        $crt_file,
+        $crt_chain_file,
+    ], ' ')
     exec { "get-certificate-chain-${domain}" :
         require     => File[$letsencrypt_chain_request],
         subscribe   => [
@@ -119,7 +124,7 @@ define letsencrypt::request (
         refreshonly => true,
         user        => letsencrypt,
         group       => letsencrypt,
-        command     => "${letsencrypt_chain_request} ${crt_file} ${crt_chain_file}",
+        command     => $get_certificate_chain_command,
         timeout     => 5*60,
         tries       => 2,
     }
@@ -157,4 +162,9 @@ define letsencrypt::request (
         replace => false,
         require => Exec["create-certificate-${domain}"],
     }
+
+    ::letsencrypt::request::ocsp { $domain :
+        require => File[$crt_file],
+    }
+
 }

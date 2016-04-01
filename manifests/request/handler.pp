@@ -47,6 +47,7 @@ class letsencrypt::request::handler(
     $letsencrypt_sh_hook  = $::letsencrypt::params::letsencrypt_sh_hook
     $letsencrypt_sh_conf  = $::letsencrypt::params::letsencrypt_sh_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
+    $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -127,6 +128,14 @@ class letsencrypt::request::handler(
         group   => letsencrypt,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb'),
+    }
+
+    file { $letsencrypt_ocsp_request :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }
 
     Letsencrypt::Request <<| tag == $::fqdn |>>
