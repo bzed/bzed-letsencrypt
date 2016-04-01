@@ -1,3 +1,13 @@
+## Release 0.1.11
+###Summary
+
+- Bugfix-only release.
+
+####Bugfixes
+
+- Ensure we're compatible to older releases.
+- Remove some unused code.
+
 ## Release 0.1.10
 ###Summary
 
