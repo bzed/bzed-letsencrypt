@@ -27,8 +27,8 @@
 define letsencrypt::request (
     $csr,
     $challengetype,
-    $altnames,
-    $domain = $name
+    $domain = $name,
+    $altnames = undef,
 ) {
 
     require ::letsencrypt::params
