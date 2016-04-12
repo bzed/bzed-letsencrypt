@@ -36,6 +36,7 @@ define letsencrypt::csr(
     $password = undef,
     $ensure = 'present',
     $force = true,
+    $dh_param_size = 2048,
 ) {
     require ::letsencrypt::params
 
@@ -47,6 +48,7 @@ define letsencrypt::csr(
     validate_string($locality)
     validate_string($unit)
     validate_string($email)
+    validate_integer($dh_param_size)
 
     $base_dir = $::letsencrypt::params::base_dir
     $csr_dir  = $::letsencrypt::params::csr_dir
@@ -69,6 +71,42 @@ define letsencrypt::csr(
     $crt = "${crt_dir}/${domain}.crt"
     $key = "${key_dir}/${domain}.key"
     $csr = "${csr_dir}/${domain}.csr"
+    $dh  = "${crt_dir}/${domain}.dh"
+
+    $create_dh_unless = join([
+        '/usr/bin/test',
+        '-f',
+        "'${dh}'",
+        '&&',
+        '/usr/bin/test',
+        '$(',
+        "/usr/bin/stat -c '%Y' ${dh}",
+        ')',
+        '-gt',
+        '$(',
+        "/bin/date --date='1 month ago' '+%s'",
+        ')',
+    ], ' ')
+
+    exec { "create-dh-${dh}" :
+        require => [
+            User['letsencrypt'],
+            File[$crt_dir]
+        ],
+        user    => letsencrypt,
+        group   => letsencrypt,
+        command => "/usr/bin/openssl dhparam -check ${dh_param_size} -out ${dh}",
+        unless  => $create_dh_unless,
+        timeout => 30*60,
+    }
+
+    file { $dh :
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'letsencrypt',
+        mode    => '0644',
+        require => Exec["create-dh-${dh}"]
+    }
 
     file { $cnf :
         ensure  => $ensure,

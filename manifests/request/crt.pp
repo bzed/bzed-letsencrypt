@@ -15,7 +15,6 @@ define letsencrypt::request::crt(
     $crt_file             = "${base_dir}/${domain}.crt"
     $ocsp_file            = "${base_dir}/${domain}.crt.ocsp"
     $crt_chain_file       = "${base_dir}/${domain}_ca.pem"
-    $dh_file              = "${base_dir}/${domain}.dh"
 
     $crt = file($crt_file)
 
@@ -23,14 +22,12 @@ define letsencrypt::request::crt(
     $ocsp = base64('encode', file_or_empty_string($ocsp_file))
 
     $crt_chain = file_or_empty_string($crt_chain_file)
-    $dh = file_or_empty_string($dh_file)
 
     if ($crt =~ /BEGIN CERTIFICATE/) {
         @@letsencrypt::deploy::crt { $domain :
             crt_content       => $crt,
             crt_chain_content => $crt_chain,
             ocsp_content      => $ocsp,
-            dh_content        => $dh,
             tag               => $::fqdn,
         }
     }

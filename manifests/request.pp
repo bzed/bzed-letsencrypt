@@ -38,7 +38,6 @@ define letsencrypt::request (
     $base_dir = "${handler_requests_dir}/${domain}"
     $csr_file = "${base_dir}/${domain}.csr"
     $crt_file = "${base_dir}/${domain}.crt"
-    $dh_file  = "${base_dir}/${domain}.dh"
     $crt_chain_file     = "${base_dir}/${domain}_ca.pem"
     $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
     $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
@@ -119,32 +118,13 @@ define letsencrypt::request (
         tries       => 2,
     }
 
-    $create_dh_file_unless = join([
-        '/usr/bin/test',
-        '-f',
-        "'${dh_file}'",
-        '&&',
-        '/usr/bin/test',
-        '$(',
-        "/usr/bin/stat -c '%Y' ${dh_file}",
-        ')',
-        '-gt',
-        '$(',
-        "/bin/date --date='1 month ago' '+%s'",
-        ')',
-    ], ' ')
 
-    exec { "create-dh-${dh_file}" :
-        require => [
-            User['letsencrypt'],
-            Group['letsencrypt'],
-            File[$base_dir]
-        ],
-        user    => letsencrypt,
-        group   => letsencrypt,
-        command => "/usr/bin/openssl dhparam -check 4096 -out ${dh_file}",
-        unless  => $create_dh_file_unless,
-        timeout => 30*60,
+    # remove dh files from old module versions
+    # TODO: remove again in the future.
+    $dh_file  = "${base_dir}/${domain}.dh"
+    file { $dh_file:
+        ensure => absent,
+        force  => true,
     }
 
     file { $crt_file :

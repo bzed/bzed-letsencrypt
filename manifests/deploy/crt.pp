@@ -10,9 +10,6 @@
 # [*crt_chain_content*]
 #   actual certificate chain file content.
 #
-# [*dh_content*]
-#   dh file content.
-#
 # [*domain*]
 #   Certificate commonname / domainname.
 #
@@ -30,7 +27,6 @@
 define letsencrypt::deploy::crt(
     $crt_content,
     $crt_chain_content,
-    $dh_content,
     $ocsp_content,
     $domain = $name
 ) {
@@ -98,25 +94,11 @@ define letsencrypt::deploy::crt(
         content => $crt_content,
         order   => '10',
     }
-
-    if ($dh_content and $dh_content =~ /BEGIN DH PARAMETERS/) {
-        file { $dh :
-            ensure  => file,
-            owner   => root,
-            group   => letsencrypt,
-            content => $dh_content,
-            mode    => '0644',
-        }
-        concat::fragment { "${domain}_dh" :
-            target  => $crt_full_chain,
-            content => $dh_content,
-            order   => '30',
-        }
-    } else {
-        file { $dh :
-            ensure => absent,
-            force  => true,
-        }
+    concat::fragment { "${domain}_dh" :
+        target  => $crt_full_chain,
+        source  => $dh,
+        order   => '30',
+        require => File[$dh],
     }
 
     if ($crt_chain_content and $crt_chain_content =~ /BEGIN CERTIFICATE/) {

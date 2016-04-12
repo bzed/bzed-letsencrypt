@@ -47,6 +47,9 @@
 #   Proxyserver to use to connect to the letsencrypt CA
 #   for example '127.0.0.1:3128'
 #
+# [*dh_param_size*]
+#   dh parameter size, defaults to 2048
+#
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
@@ -71,6 +74,7 @@ class letsencrypt (
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
     $lentsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
+    $dh_param_size = 2048,
 ){
 
     require ::letsencrypt::params
@@ -125,6 +129,7 @@ class letsencrypt (
     letsencrypt::csr { $domains :
         letsencrypt_host => $letsencrypt_host,
         challengetype    => $challengetype,
+        dh_param_size    => $dh_param_size,
     }
 
 }
