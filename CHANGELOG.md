@@ -1,3 +1,16 @@
+## Release 0.1.12
+###Summary
+
+- Avoid dh parameter generation on the puppet master host.
+
+####Bugfixes
+
+- Add missing dependency on puppetlabs-vcsrepo.
+
+####Improvements
+
+- Create dh files on the puppet client, not master. Made possible by requiring an uptodate concat version.
+
 ## Release 0.1.11
 ###Summary
 
