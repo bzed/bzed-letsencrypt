@@ -105,7 +105,7 @@ define letsencrypt::csr(
         owner   => 'root',
         group   => 'letsencrypt',
         mode    => '0644',
-        require => Exec["create-dh-${dh}"]
+        require => Exec["create-dh-${dh}"],
     }
 
     file { $cnf :
