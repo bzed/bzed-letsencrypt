@@ -1,3 +1,12 @@
+## Release 0.1.13
+###Summary
+
+- Bugfix-only release.
+
+####Bugfixes
+
+- Don't require User['letsencrypt'] on clients - its only available on puppet masters.
+
 ## Release 0.1.12
 ###Summary
 
