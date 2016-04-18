@@ -90,11 +90,10 @@ define letsencrypt::csr(
 
     exec { "create-dh-${dh}" :
         require => [
-            User['letsencrypt'],
             File[$crt_dir]
         ],
-        user    => letsencrypt,
-        group   => letsencrypt,
+        user    => 'root',
+        group   => 'letsencrypt',
         command => "/usr/bin/openssl dhparam -check ${dh_param_size} -out ${dh}",
         unless  => $create_dh_unless,
         timeout => 30*60,
