@@ -121,6 +121,42 @@ option:
     }
 ~~~
 
+## Examples
+### Postfix
+Using the _thias-postfix_ module:
+
+~~~puppet
+    require ::letsencrypt::params
+    $crt_dir = $::letsencrypt::params::crt_dir
+    $key_dir = $::letsencrypt::params::key_dir
+    $myhostname = $::fqdn
+
+    ::letsencrypt::certificate { $myhostname :
+        notify => Service['postfix'],
+    }
+
+    ::postfix::config { 'smtpd_tls_cert_file' :
+        value   => "${crt_dir}/${myhostname}_fullchain.pem",
+        require => Letsencrypt::Certificate[$myhostname]
+    }
+    ::postfix::config { 'smtpd_tls_key_file' :
+        value   => "${key_dir}/${myhostname}.key",
+        require => Letsencrypt::Certificate[$myhostname]
+    }
+    ::postfix::config { 'smtpd_use_tls' :
+        value => 'yes'
+    }
+    ::postfix::config { 'smtpd_tls_session_cache_database' :
+        value => "btree:\${data_directory}/smtpd_scache",
+    }
+    ::postfix::config { 'smtp_tls_session_cache_database' :
+        value => "btree:\${data_directory}/smtp_scache",
+    }
+    ::postfix::config { 'smtp_tls_security_level' :
+        value => 'may',
+    }
+
+~~~
 
 ## Reference
 
