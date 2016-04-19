@@ -1,3 +1,13 @@
+## Release 0.1.14
+###Summary
+
+- Introduce letsencrypt::certificate
+
+####Improvements
+
+- With the new letsencrypt::certificate it is now possible to request certificates from other puppet modules. Subscribing to the define or receiving notifications from it is also possible.
+- Add an usage example to README.md, showing how to use letsencrypt::certificate with thias-postfix.
+
 ## Release 0.1.13
 ###Summary
 
