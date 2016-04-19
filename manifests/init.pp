@@ -78,28 +78,7 @@ class letsencrypt (
 ){
 
     require ::letsencrypt::params
-
-    group { 'letsencrypt' :
-        ensure => present,
-    }
-
-    File {
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'letsencrypt',
-        mode    => '0755',
-        require => Group['letsencrypt'],
-    }
-
-    file { $::letsencrypt::params::base_dir :
-    }
-    file { $::letsencrypt::params::csr_dir :
-    }
-    file { $::letsencrypt::params::crt_dir :
-    }
-    file { $::letsencrypt::params::key_dir :
-        mode    => '0750',
-    }
+    require ::letsencrypt::setup
 
     if ($::fqdn == $letsencrypt_host) {
         if !($hook_source or $hook_content) {
@@ -118,18 +97,16 @@ class letsencrypt (
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
             $letsencrypt_crts_array = split($::letsencrypt_crts, ',')
-            letsencrypt::request::crt { $letsencrypt_crts_array : }
+            ::letsencrypt::request::crt { $letsencrypt_crts_array : }
         }
     }
 
 
-    letsencrypt::deploy { $domains :
-        letsencrypt_host => $letsencrypt_host,
-    }
-    letsencrypt::csr { $domains :
+    ::letsencrypt::certificate { $domains :
         letsencrypt_host => $letsencrypt_host,
         challengetype    => $challengetype,
         dh_param_size    => $dh_param_size,
     }
+
 
 }
