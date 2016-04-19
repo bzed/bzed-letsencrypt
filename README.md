@@ -66,6 +66,15 @@ On a puppet node where you need your certificates:
 Key and CSR will be generated on your node and the CSR
 is shipped to your puppetmaster for signing.
 
+Additionally to or instead of specifying the domains as
+parameter to the letsencrypt class, it is possible to
+call the letsencrypt::certificate define directly:
+
+~~~puppet
+    ::letsencrypt::certificate { 'foo.example.com' :
+    }
+~~~
+
 #### SAN Certificates
 Requesting SAN certificates is also possible. To do so pass a
 space seperated list of domainnames into the domains array.
@@ -79,6 +88,13 @@ for the request. For example:
         ],
     }
 ~~~
+
+And/or:
+~~~puppet
+    ::letsencrypt::certificate { 'foo.example.com bar.example.com good.example.com' :
+    }
+~~~
+
 
 ### On your puppetmaster:
 What you need to prepare is a hook you want to use with letsencrypt.sh
