@@ -33,7 +33,7 @@
 # Copyright 2016 Bernd Zeimetz
 #
 define letsencrypt::certificate (
-    $domain,
+    $domain = $name,
     $challengetype = $::letsencrypt::challengetype,
     $letsencrypt_host = $::letsencrypt::letsencrypt_host,
     $dh_param_size = $::letsencrypt::dh_param_size,
