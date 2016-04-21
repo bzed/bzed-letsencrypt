@@ -123,24 +123,31 @@ option:
 
 ## Examples
 ### Postfix
-Using the _thias-postfix_ module:
+Using the _camptocamp-postfix_ module:
 
 ~~~puppet
     require ::letsencrypt::params
-    $crt_dir = $::letsencrypt::params::crt_dir
-    $key_dir = $::letsencrypt::params::key_dir
     $myhostname = $::fqdn
+
+    $base_dir = $::letsencrypt::params::base_dir
+    $crt_dir  = $::letsencrypt::params::crt_dir
+    $key_dir  = $::letsencrypt::params::key_dir
+
+    $postfix_chroot = '/var/spool/postfix'
+
+    $tls_key = "${key_dir}/${myhostname}.key"
+    $tls_cert = "${crt_dir}/${myhostname}_fullchain.pem"
 
     ::letsencrypt::certificate { $myhostname :
         notify => Service['postfix'],
     }
 
     ::postfix::config { 'smtpd_tls_cert_file' :
-        value   => "${crt_dir}/${myhostname}_fullchain.pem",
+        value   => $tls_cert,
         require => Letsencrypt::Certificate[$myhostname]
     }
     ::postfix::config { 'smtpd_tls_key_file' :
-        value   => "${key_dir}/${myhostname}.key",
+        value   => $tls_key,
         require => Letsencrypt::Certificate[$myhostname]
     }
     ::postfix::config { 'smtpd_use_tls' :
@@ -154,6 +161,43 @@ Using the _thias-postfix_ module:
     }
     ::postfix::config { 'smtp_tls_security_level' :
         value => 'may',
+    }
+
+    file { [
+        "${postfix_chroot}/${base_dir}",
+        "${postfix_chroot}/${crt_dir}",
+    ] :
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+    file { "${postfix_chroot}/${key_dir}" :
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
+
+    file { "${postfix_chroot}/${tls_key}" :
+        ensure    => file,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0640',
+        source    => $tls_key,
+        subscribe => Letsencrypt::Certificate[$myhostname],
+        notify    => Service['postfix'],
+    }
+
+    file { "${postfix_chroot}/${tls_cert}" :
+        ensure    => file,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0644',
+        source    => $tls_cert,
+        subscribe => Letsencrypt::Certificate[$myhostname],
+        notify    => Service['postfix'],
     }
 
 ~~~
