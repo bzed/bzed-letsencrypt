@@ -5,7 +5,7 @@
 # == Parameters:
 #
 # [*letsencrypt_host*]
-#   Host the certificates were signed on
+#   Host the certificates will be signed on
 #
 # [*challengetype*]
 #   challengetype letsencrypt should use.
