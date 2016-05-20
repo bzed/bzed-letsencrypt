@@ -145,7 +145,7 @@ define letsencrypt::csr(
     }
 
     $csr_content = getvar("::letsencrypt_csr_${domain}")
-    if ($csr_content =~ /CERTIFICATE REQUEST/) {
+    if $csr_content and ($csr_content =~ /CERTIFICATE REQUEST/) {
         @@letsencrypt::request { $domain :
             csr           => $csr_content,
             tag           => $letsencrypt_host,
