@@ -17,7 +17,7 @@ req_extensions          = v3_req
 
 [ req_distinguished_name ]
 commonName                      = <%= @domain %>
-<% unless @contry.nil? -%>
+<% unless @country.nil? -%>
 countryName                     = <%= @country %>
 <% end -%>
 <% unless @state.nil? -%>
