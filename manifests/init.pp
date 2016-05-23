@@ -30,7 +30,7 @@
 #   letsencrypt.sh hook.
 #   hook_source or hook_content needs to be specified.
 #
-# [*letsencrypt_host*]
+# [*letsencrypt_real_host*]
 #   The host you want to run letsencrypt.sh on.
 #   For now it needs to be a puppetmaster, as it needs direct access
 #   to the certificates using functions in puppet.
@@ -70,7 +70,7 @@ class letsencrypt (
     $challengetype = 'dns-01',
     $hook_source = undef,
     $hook_content = undef,
-    $letsencrypt_host = $::puppetmaster,
+    $letsencrypt_host = undef,
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
     $lentsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
@@ -80,7 +80,13 @@ class letsencrypt (
     require ::letsencrypt::params
     require ::letsencrypt::setup
 
-    if ($::fqdn == $letsencrypt_host) {
+    $letsencrypt_real_host = pick(
+        $letsencrypt_host,
+        $::servername,
+        $::puppetmaster
+    )
+
+    if ($::fqdn == $letsencrypt_real_host) {
         if !($hook_source or $hook_content) {
             notify { '$hook_source or $hook_content needs to be specified!' :
                 loglevel => err,
@@ -103,7 +109,7 @@ class letsencrypt (
 
 
     ::letsencrypt::certificate { $domains :
-        letsencrypt_host => $letsencrypt_host,
+        letsencrypt_host => $letsencrypt_real_host,
         challengetype    => $challengetype,
         dh_param_size    => $dh_param_size,
     }
