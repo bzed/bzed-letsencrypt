@@ -40,6 +40,7 @@ define letsencrypt::csr(
 ) {
     require ::letsencrypt::params
 
+    validate_string($letsencrypt_host)
     validate_string($country)
     validate_string($organization)
     validate_string($domain_list)
