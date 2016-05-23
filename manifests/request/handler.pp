@@ -94,7 +94,10 @@ class letsencrypt::request::handler(
         provider => git,
         source   => $letsencrypt_sh_git_url,
         user     => root,
-        require  => File[$handler_base_dir],
+        require  => [
+            File[$handler_base_dir],
+            Package['git']
+        ],
     }
 
     # handle switching CAs with different account keys.

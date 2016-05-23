@@ -37,4 +37,6 @@ class letsencrypt::setup (
         mode    => '0750',
     }
 
+    ensure_packages('git')
+
 }
