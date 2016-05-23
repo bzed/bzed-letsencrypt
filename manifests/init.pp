@@ -30,7 +30,7 @@
 #   letsencrypt.sh hook.
 #   hook_source or hook_content needs to be specified.
 #
-# [*letsencrypt_real_host*]
+# [*letsencrypt_host*]
 #   The host you want to run letsencrypt.sh on.
 #   For now it needs to be a puppetmaster, as it needs direct access
 #   to the certificates using functions in puppet.
