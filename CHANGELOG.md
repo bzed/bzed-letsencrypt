@@ -1,3 +1,19 @@
+## Release 0.1.15
+###Summary
+
+- Bugfix release
+- Better Puppetserver support
+
+####Bugfixes
+
+  - Various minor bugfixes, typo fixes.
+
+####Improvements
+
+ - Better variable validation
+ - Use puppetserver variables automatically
+
+
 ## Release 0.1.14
 ###Summary
 
