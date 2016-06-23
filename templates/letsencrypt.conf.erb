@@ -59,7 +59,7 @@ PRIVATE_KEY_JSON="<%= @handler_base_dir -%>/<%= @private_key_name -%>.json"
 
 # E-mail to use during the registration (default: <unset>)
 <% if @lentsencrypt_contact_email -%>
-CONTACT_EMAIL=<%= @lentsencrypt_contact_email %>
+CONTACT_EMAIL=<%= @letsencrypt_contact_email %>
 <%- else -%>
 #CONTACT_EMAIL=
 <%- end %>
@@ -74,4 +74,3 @@ https_proxy="<%= @letsencrypt_proxy -%>"
 export http_proxy
 export https_proxy
 <%- end %>
-
