@@ -35,7 +35,7 @@ class letsencrypt::request::handler(
     $letsencrypt_ca,
     $hook_source,
     $hook_content,
-    $lentsencrypt_contact_email,
+    $letsencrypt_contact_email,
     $letsencrypt_proxy,
 ){
 
