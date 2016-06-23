@@ -97,7 +97,7 @@ class letsencrypt (
                 letsencrypt_ca             => $letsencrypt_ca,
                 hook_source                => $hook_source,
                 hook_content               => $hook_content,
-                lentsencrypt_contact_email => $lentsencrypt_contact_email,
+                letsencrypt_contact_email  => $letsencrypt_contact_email,
                 letsencrypt_proxy          => $letsencrypt_proxy,
             }
         }

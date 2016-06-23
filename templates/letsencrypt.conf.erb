@@ -58,7 +58,7 @@ PRIVATE_KEY_JSON="<%= @handler_base_dir -%>/<%= @private_key_name -%>.json"
 #KEY_ALGO=rsa
 
 # E-mail to use during the registration (default: <unset>)
-<% if @lentsencrypt_contact_email -%>
+<% if @letsencrypt_contact_email -%>
 CONTACT_EMAIL=<%= @letsencrypt_contact_email %>
 <%- else -%>
 #CONTACT_EMAIL=
