@@ -72,7 +72,7 @@ class letsencrypt (
     $hook_content = undef,
     $letsencrypt_host = undef,
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
-    $lentsencrypt_contact_email = undef,
+    $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
     $dh_param_size = 2048,
 ){
