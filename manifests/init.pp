@@ -95,12 +95,12 @@ class letsencrypt (
             }
         } else {
             class { '::letsencrypt::request::handler' :
-                letsencrypt_sh_git_url     => $letsencrypt_sh_git_url,
-                letsencrypt_ca             => $letsencrypt_ca,
-                hook_source                => $hook_source,
-                hook_content               => $hook_content,
-                letsencrypt_contact_email  => $letsencrypt_contact_email,
-                letsencrypt_proxy          => $letsencrypt_proxy,
+                letsencrypt_sh_git_url    => $letsencrypt_sh_git_url,
+                letsencrypt_ca            => $letsencrypt_ca,
+                hook_source               => $hook_source,
+                hook_content              => $hook_content,
+                letsencrypt_contact_email => $letsencrypt_contact_email,
+                letsencrypt_proxy         => $letsencrypt_proxy,
             }
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {
