@@ -87,6 +87,8 @@ class letsencrypt (
     )
 
     if ($::fqdn == $letsencrypt_real_host) {
+        require ::letsencrypt::setup::puppetmaster
+
         if !($hook_source or $hook_content) {
             notify { '$hook_source or $hook_content needs to be specified!' :
                 loglevel => err,
