@@ -128,6 +128,15 @@ define letsencrypt::csr(
         password    => $password,
         force       => $force,
         require     => File[$cnf],
+    }
+
+    exec { "refresh-csr-${csr}" :
+        path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+        command     => "rm -f ${csr}",
+        refreshonly => true,
+        user        => 'root',
+        group       => 'letsencrypt',
+        before      => X509_request[$csr],
         subscribe   => File[$cnf],
     }
 
