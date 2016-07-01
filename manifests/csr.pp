@@ -128,6 +128,7 @@ define letsencrypt::csr(
         password    => $password,
         force       => $force,
         require     => File[$cnf],
+        subscribe   => File[$cnf],
     }
 
     file { $key :
