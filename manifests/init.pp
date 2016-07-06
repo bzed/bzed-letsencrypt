@@ -50,6 +50,9 @@
 # [*dh_param_size*]
 #   dh parameter size, defaults to 2048
 #
+# [*manage_packages*]
+#   install necessary packages, mainly git
+#
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
@@ -75,10 +78,12 @@ class letsencrypt (
     $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
     $dh_param_size = 2048,
+    $manage_packages = true,
 ){
 
     require ::letsencrypt::params
     require ::letsencrypt::setup
+
 
     $letsencrypt_real_host = pick(
         $letsencrypt_host,
@@ -87,7 +92,9 @@ class letsencrypt (
     )
 
     if ($::fqdn == $letsencrypt_real_host) {
-        require ::letsencrypt::setup::puppetmaster
+        class { '::letsencrypt::setup::puppetmaster' :
+            manage_packages => $manage_packages,
+        }
 
         if !($hook_source or $hook_content) {
             notify { '$hook_source or $hook_content needs to be specified!' :

@@ -11,8 +11,11 @@
 # Copyright 2016 Bernd Zeimetz
 #
 class letsencrypt::setup::puppetmaster (
+    $manage_packages = true,
 ){
 
-    ensure_packages('git')
+    if ($manage_packages) {
+        ensure_packages('git')
+    }
 
 }
