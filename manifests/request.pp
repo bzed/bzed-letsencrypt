@@ -86,6 +86,7 @@ define letsencrypt::request (
 
     exec { "create-certificate-${domain}" :
         user    => 'letsencrypt',
+        cwd     => $letsencrypt_sh_dir,
         group   => 'letsencrypt',
         unless  => $le_check_command,
         command => $le_command,
