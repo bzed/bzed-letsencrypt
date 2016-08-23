@@ -80,7 +80,7 @@ class letsencrypt::request::handler(
     }
 
     file { $letsencrypt_sh_hook :
-        ensure  => present,
+        ensure  => file,
         group   => 'letsencrypt',
         require => Group['letsencrypt'],
         source  => $hook_source,
@@ -141,5 +141,5 @@ class letsencrypt::request::handler(
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }
 
-    Letsencrypt::Request <<| tag == $::fqdn |>>
+    Letsencrypt::Request<<| tag == $::fqdn |>>
 }
