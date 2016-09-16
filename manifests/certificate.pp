@@ -14,7 +14,7 @@
 #   Challenge type to use, defaults to $::letsencrypt::challengetype
 #
 # [*letsencrypt_host*]
-#   The host you want to run letsencrypt.sh on.
+#   The host you want to run dehydrated on.
 #   Defaults to $::letsencrypt::letsencrypt_host
 #
 # [*dh_param_size*]

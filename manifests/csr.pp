@@ -8,7 +8,7 @@
 #   Host the certificates will be signed on
 #
 # [*challengetype*]
-#   challengetype letsencrypt should use.
+#   challengetype dehydratedould use.
 #
 #  .... plus various other undocumented parameters
 #

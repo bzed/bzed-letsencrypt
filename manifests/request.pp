@@ -11,7 +11,7 @@
 #   Certificate commonname / domainname.
 #
 # [*challengetype*]
-#   challengetype letsencrypt should use.
+#   challengetype dehydratedould use.
 #
 #
 # === Authors
@@ -39,10 +39,10 @@ define letsencrypt::request (
     $csr_file = "${base_dir}/${domain}.csr"
     $crt_file = "${base_dir}/${domain}.crt"
     $crt_chain_file     = "${base_dir}/${domain}_ca.pem"
-    $letsencrypt_sh     = $::letsencrypt::params::letsencrypt_sh
-    $letsencrypt_sh_dir = $::letsencrypt::params::letsencrypt_sh_dir
-    $letsencrypt_sh_hook   = $::letsencrypt::params::letsencrypt_sh_hook
-    $letsencrypt_sh_conf   = $::letsencrypt::params::letsencrypt_sh_conf
+    $dehydrated     = $::letsencrypt::params::dehydrated
+    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir
+    $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
+    $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
 
 
@@ -72,11 +72,11 @@ define letsencrypt::request (
     ], ' && ')
 
     $le_command = join([
-        $letsencrypt_sh,
+        $dehydrated,
         "-d ${domain}",
-        "-k ${letsencrypt_sh_hook}",
+        "-k ${dehydrated_hook}",
         "-t ${challengetype}",
-        "-f ${letsencrypt_sh_conf}",
+        "-f ${dehydrated_conf}",
         '-a rsa',
         '--signcsr',
         $csr_file,
@@ -86,7 +86,7 @@ define letsencrypt::request (
 
     exec { "create-certificate-${domain}" :
         user    => 'letsencrypt',
-        cwd     => $letsencrypt_sh_dir,
+        cwd     => $dehydrated_dir,
         group   => 'letsencrypt',
         unless  => $le_check_command,
         command => $le_command,
@@ -94,9 +94,9 @@ define letsencrypt::request (
             User['letsencrypt'],
             Group['letsencrypt'],
             File[$csr_file],
-            Vcsrepo[$letsencrypt_sh_dir],
-            File[$letsencrypt_sh_hook],
-            File[$letsencrypt_sh_conf],
+            Vcsrepo[$dehydrated_dir],
+            File[$dehydrated_hook],
+            File[$dehydrated_conf],
         ],
     }
 

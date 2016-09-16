@@ -6,18 +6,18 @@
 #
 # === Parameters
 #
-# [*letsencrypt_sh_git_url*]
-#   URL used to checkout the letsencrypt.sh using git.
+# [*dehydrated_git_url*]
+#   URL used to checkout the dehydrated using git.
 #   Defaults to the upstream github url.
 #
 # [*hook_source*]
-#   Points to the source of the letsencrypt.sh hook you'd like to
+#   Points to the source of the dehydrated hook you'd like to
 #   distribute ((as in file { ...: source => })
 #   hook_source or hook_content needs to be specified.
 #
 # [*hook_content*]
 #   The actual content (as in file { ...: content => }) of the
-#   letsencrypt.sh hook.
+#   dehydrated hook.
 #   hook_source or hook_content needs to be specified.
 #
 # === Authors
@@ -31,7 +31,7 @@
 
 
 class letsencrypt::request::handler(
-    $letsencrypt_sh_git_url,
+    $dehydrated_git_url,
     $letsencrypt_ca,
     $hook_source,
     $hook_content,
@@ -43,9 +43,9 @@ class letsencrypt::request::handler(
 
     $handler_base_dir     = $::letsencrypt::params::handler_base_dir
     $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
-    $letsencrypt_sh_dir   = $::letsencrypt::params::letsencrypt_sh_dir
-    $letsencrypt_sh_hook  = $::letsencrypt::params::letsencrypt_sh_hook
-    $letsencrypt_sh_conf  = $::letsencrypt::params::letsencrypt_sh_conf
+    $dehydrated_dir   = $::letsencrypt::params::dehydrated_dir
+    $dehydrated_hook  = $::letsencrypt::params::dehydrated_hook
+    $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
 
@@ -79,7 +79,7 @@ class letsencrypt::request::handler(
         mode   => '0755',
     }
 
-    file { $letsencrypt_sh_hook :
+    file { $dehydrated_hook :
         ensure  => file,
         group   => 'letsencrypt',
         require => Group['letsencrypt'],
@@ -88,11 +88,11 @@ class letsencrypt::request::handler(
         mode    => '0750',
     }
 
-    vcsrepo { $letsencrypt_sh_dir :
+    vcsrepo { $dehydrated_dir :
         ensure   => latest,
         revision => master,
         provider => git,
-        source   => $letsencrypt_sh_git_url,
+        source   => $dehydrated_git_url,
         user     => root,
         require  => [
             File[$handler_base_dir],
@@ -117,7 +117,7 @@ class letsencrypt::request::handler(
         )
         $private_key_name = "private_key_${_ca_domain_escaped}"
     }
-    file { $letsencrypt_sh_conf :
+    file { $dehydrated_conf :
         ensure  => file,
         owner   => root,
         group   => letsencrypt,

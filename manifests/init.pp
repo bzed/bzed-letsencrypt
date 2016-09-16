@@ -12,26 +12,26 @@
 #   For SAN certificates you need to pass space seperated strings,
 #   for example ['foo.example.com fuzz.example.com', 'blub.example.com']
 #
-# [*letsencrypt_sh_git_url*]
-#   URL used to checkout the letsencrypt.sh using git.
+# [*dehydrated_git_url*]
+#   URL used to checkout the dehydrated using git.
 #   Defaults to the upstream github url.
 #
 # [*channlengetype*]
-#   Challenge type to use, default is 'dns-01'. Your letsencrypt.sh
+#   Challenge type to use, default is 'dns-01'. Your dehydrated
 #   hook needs to be able to handle it.
 #
 # [*hook_source*]
-#   Points to the source of the letsencrypt.sh hook you'd like to
+#   Points to the source of the dehydrated hook you'd like to
 #   distribute ((as in file { ...: source => })
 #   hook_source or hook_content needs to be specified.
 #
 # [*hook_content*]
 #   The actual content (as in file { ...: content => }) of the
-#   letsencrypt.sh hook.
+#   dehydrated hook.
 #   hook_source or hook_content needs to be specified.
 #
 # [*letsencrypt_host*]
-#   The host you want to run letsencrypt.sh on.
+#   The host you want to run dehydrated on.
 #   For now it needs to be a puppetmaster, as it needs direct access
 #   to the certificates using functions in puppet.
 #
@@ -56,7 +56,7 @@
 # === Examples
 #   class { 'letsencrypt' :
 #       domains     => [ 'foo.example.com', 'fuzz.example.com' ],
-#       hook_source => 'puppet:///modules/mymodule/letsencrypt_sh_hook'
+#       hook_source => 'puppet:///modules/mymodule/dehydrated_hook'
 #   }
 #
 # === Authors
@@ -69,7 +69,7 @@
 #
 class letsencrypt (
     $domains = [],
-    $letsencrypt_sh_git_url = 'https://github.com/lukas2511/letsencrypt.sh.git',
+    $dehydrated_git_url = 'https://github.com/lukas2511/dehydrated.git',
     $challengetype = 'dns-01',
     $hook_source = undef,
     $hook_content = undef,
@@ -102,7 +102,7 @@ class letsencrypt (
             }
         } else {
             class { '::letsencrypt::request::handler' :
-                letsencrypt_sh_git_url    => $letsencrypt_sh_git_url,
+                dehydrated_git_url    => $dehydrated_git_url,
                 letsencrypt_ca            => $letsencrypt_ca,
                 hook_source               => $hook_source,
                 hook_content              => $hook_content,

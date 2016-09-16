@@ -23,10 +23,10 @@ class letsencrypt::params {
     $handler_base_dir = '/opt/letsencrypt'
     $handler_requests_dir  = "${handler_base_dir}/requests"
 
-    $letsencrypt_sh_dir  = "${handler_base_dir}/letsencrypt.sh"
-    $letsencrypt_sh_hook = "${handler_base_dir}/letsencrypt_hook"
-    $letsencrypt_sh_conf = "${handler_base_dir}/letsencrypt.conf"
-    $letsencrypt_sh      = "${letsencrypt_sh_dir}/letsencrypt.sh"
+    $dehydrated_dir  = "${handler_base_dir}/dehydrated"
+    $dehydrated_hook = "${handler_base_dir}/letsencrypt_hook"
+    $dehydrated_conf = "${handler_base_dir}/letsencrypt.conf"
+    $dehydrated      = "${dehydrated_dir}/dehydrated"
 
     $letsencrypt_chain_request = "${handler_base_dir}/letsencrypt_get_certificate_chain.sh"
     $letsencrypt_ocsp_request = "${handler_base_dir}/letsencrypt_get_certificate_ocsp.sh"
