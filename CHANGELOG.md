@@ -1,3 +1,18 @@
+## Release 0.1.16
+###Summary
+
+- letsencrypt.sh was renamed to dehydrated. This release makes bzed-letsencrypt work with dehydrated while staying compatible as much as possible.
+- I'll follow the rename - bzed-letsencrypt will be renamed to bzed-dehydrated before somebody tries to force me to do so. I understand that  Let’s Encrypt™ needs to enforce their trademark, but they should find a better way to handle these issues.
+
+####Features
+
+- Use 'dehydrated'.
+
+####Bugfixes
+
+- Various little bugfixes
+
+
 ## Release 0.1.15
 ###Summary
 
