@@ -64,7 +64,8 @@ On a puppet node where you need your certificates:
     }
 ~~~
 Key and CSR will be generated on your node and the CSR
-is shipped to your puppetmaster for signing - the puppetmaster needs a public interface and the cert is put on your node after some time.
+is shipped to your puppetmaster for signing - the puppetmaster needs
+a public interface and the cert is put on your node after some time.
 
 Additionally to or instead of specifying the domains as
 parameter to the letsencrypt class, it is possible to
