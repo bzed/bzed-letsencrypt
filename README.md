@@ -24,8 +24,8 @@ Centralized CSR signing using Let’s Encrypt™ - keeping your keys safe on the
 
 bzed-letsencrypy creates private keys and CSRs, transfers
 the CSR to a puppetmaster where it is signed using
-the well known letsencrypt.sh
-https://github.com/lukas2511/letsencrypt.sh
+the well known dehydrated
+https://github.com/lukas2511/dehydrated
 
 Signed certificates are shipped back to the appropriate host.
 
@@ -40,7 +40,7 @@ Let’s Encrypt is a trademark of the Internet Security Research Group. All righ
 ### What letsencrypt affects
 
 
-* letsencrypt.sh is running at the puppetmaster host as it is easier
+* dehydrated is running at the puppetmaster host as it is easier
   to read and work with certificate files stored directly on the puppet
   master. Retrieving them using facter is unnecessarily complicated.
 
@@ -98,14 +98,14 @@ And/or:
 
 
 ### On your puppetmaster:
-What you need to prepare is a hook you want to use with letsencrypt.sh
+What you need to prepare is a hook you want to use with dehydrated
 as you need to deploy the challenges somehow. Various examples for
 valid DNS-01 hooks are listed on
-https://github.com/lukas2511/letsencrypt.sh/wiki/Examples-for-DNS-01-hooks
+https://github.com/lukas2511/dehydrated/wiki/Examples-for-DNS-01-hooks
 
 ~~~puppet
     class { 'letsencrypt' :
-        hook_source => 'puppet:///modules/mymodule/letsencrypt_sh_hook'
+        hook_source => 'puppet:///modules/mymodule/dehydrated_hook'
     }
 ~~~
 CSRs are collected and signed, and the resulting
@@ -117,7 +117,7 @@ you'll hit rate limits pretty soon. To do s set the letsencrypt\_ca
 option:
 ~~~puppet
     class { 'letsencrypt' :
-        hook_source    => 'puppet:///modules/mymodule/letsencrypt_sh_hook',
+        hook_source    => 'puppet:///modules/mymodule/dehydrated_hook',
         letsencrypt_ca => 'https://acme-staging.api.letsencrypt.org/directory',
     }
 ~~~
