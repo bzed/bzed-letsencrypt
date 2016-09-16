@@ -3,9 +3,11 @@
 
 Puppet::Parser::Functions.newfunction(
   :file_or_empty_string,
-  type: :rvalue,
-  doc:  "Return the contents of a file.  Multiple files
-         can be passed, and the first file that exists will be read in."
+  :type => :rvalue,
+  :doc  => <<-EOS
+  Return the contents of a file.  Multiple files
+  can be passed, and the first file that exists will be read in.
+  EOS
 ) do |vals|
   ret = nil
   vals.each do |file|
