@@ -69,7 +69,8 @@
 #
 class letsencrypt (
     $domains = [],
-    $dehydrated_git_url = 'https://github.com/lukas2511/dehydrated.git',
+    $letsencrypt_sh_git_url = 'https://github.com/lukas2511/dehydrated.git',
+    $dehydrated_git_url = $letsencrypt_sh_git_url,
     $challengetype = 'dns-01',
     $hook_source = undef,
     $hook_content = undef,
@@ -102,7 +103,7 @@ class letsencrypt (
             }
         } else {
             class { '::letsencrypt::request::handler' :
-                dehydrated_git_url    => $dehydrated_git_url,
+                dehydrated_git_url        => $dehydrated_git_url,
                 letsencrypt_ca            => $letsencrypt_ca,
                 hook_source               => $hook_source,
                 hook_content              => $hook_content,
