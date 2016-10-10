@@ -48,6 +48,7 @@ class letsencrypt::request::handler(
     $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
+    $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -139,6 +140,14 @@ class letsencrypt::request::handler(
         group   => letsencrypt,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
+    }
+
+    file { $letsencrypt_check_altnames :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => file('letsencrypt/letsencrypt_check_altnames.sh'),
     }
 
     Letsencrypt::Request<<| tag == $::fqdn |>>

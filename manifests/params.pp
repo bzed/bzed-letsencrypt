@@ -30,4 +30,5 @@ class letsencrypt::params {
 
     $letsencrypt_chain_request = "${handler_base_dir}/letsencrypt_get_certificate_chain.sh"
     $letsencrypt_ocsp_request = "${handler_base_dir}/letsencrypt_get_certificate_ocsp.sh"
+    $letsencrypt_check_altnames = "${handler_base_dir}/letsencrypt_check_altnames.sh"
 }

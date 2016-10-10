@@ -44,7 +44,7 @@ define letsencrypt::request (
     $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
     $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
-
+    $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames
 
     File {
         owner   => 'letsencrypt',
@@ -69,6 +69,7 @@ define letsencrypt::request (
     $le_check_command = join([
         "/usr/bin/test -f ${crt_file}",
         "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
+        "${letsencrypt_check_altnames} ${csr_file} ${crt_file}"
     ], ' && ')
 
     $le_command = join([
