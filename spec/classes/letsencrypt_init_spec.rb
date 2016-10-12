@@ -1,5 +1,6 @@
 require 'spec_helper'
-describe 'letsencrypt' do
+
+describe 'letsencrypt', type: :class do
   let :facts do
     {
       osfamily: 'Debian',
