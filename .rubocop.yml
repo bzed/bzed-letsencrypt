@@ -4,7 +4,6 @@ AllCops:
   Include:
     - ./**/*.rb
   Exclude:
-    - files/**/*
     - vendor/**/*
     - .vendor/**/*
     - pkg/**/*
@@ -493,7 +492,7 @@ Lint/UselessAssignment:
   Enabled: True
 
 Style/ClosingParenthesisIndentation:
-  Enabled: True
+  Enabled: False
 
 # RSpec
 
