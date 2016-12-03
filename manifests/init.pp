@@ -74,7 +74,7 @@ class letsencrypt (
     $challengetype = 'dns-01',
     $hook_source = undef,
     $hook_content = undef,
-    $letsencrypt_host = undef,
+    $letsencrypt_host = pick($::servername, $::puppetmaster),
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
     $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
@@ -86,13 +86,7 @@ class letsencrypt (
     require ::letsencrypt::setup
 
 
-    $letsencrypt_real_host = pick(
-        $letsencrypt_host,
-        $::servername,
-        $::puppetmaster
-    )
-
-    if ($::fqdn == $letsencrypt_real_host) {
+    if ($::fqdn == $letsencrypt_host) {
         class { '::letsencrypt::setup::puppetmaster' :
             manage_packages => $manage_packages,
         }
@@ -119,7 +113,7 @@ class letsencrypt (
 
 
     ::letsencrypt::certificate { $domains :
-        letsencrypt_host => $letsencrypt_real_host,
+        letsencrypt_host => $letsencrypt_host,
         challengetype    => $challengetype,
         dh_param_size    => $dh_param_size,
     }
