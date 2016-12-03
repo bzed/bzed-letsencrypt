@@ -69,30 +69,22 @@
 #
 class letsencrypt (
     $domains = [],
-    $letsencrypt_sh_git_url = 'https://github.com/lukas2511/dehydrated.git',
+    $letsencrypt_sh_git_url = $::letsencrypt::params::letsencrypt_sh_git_url,
     $dehydrated_git_url = $letsencrypt_sh_git_url,
-    $challengetype = 'dns-01',
+    $challengetype = $::letsencrypt::params::challengetype,
     $hook_source = undef,
     $hook_content = undef,
-    $letsencrypt_host = undef,
-    $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory',
+    $letsencrypt_host = $::letsencrypt::params::letsencrypt_host,
+    $letsencrypt_ca = $::letsencrypt::params::letsencrypt_ca,
     $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
-    $dh_param_size = 2048,
-    $manage_packages = true,
-){
+    $dh_param_size = $::letsencrypt::params::dh_param_size,
+    $manage_packages = $::letsencrypt::params::manage_packages,
+) inherits ::letsencrypt::params {
 
-    require ::letsencrypt::params
     require ::letsencrypt::setup
 
-
-    $letsencrypt_real_host = pick(
-        $letsencrypt_host,
-        $::servername,
-        $::puppetmaster
-    )
-
-    if ($::fqdn == $letsencrypt_real_host) {
+    if ($::fqdn == $letsencrypt_host) {
         class { '::letsencrypt::setup::puppetmaster' :
             manage_packages => $manage_packages,
         }
@@ -117,12 +109,10 @@ class letsencrypt (
         }
     }
 
-
     ::letsencrypt::certificate { $domains :
-        letsencrypt_host => $letsencrypt_real_host,
+        letsencrypt_host => $letsencrypt_host,
         challengetype    => $challengetype,
         dh_param_size    => $dh_param_size,
     }
-
 
 }
