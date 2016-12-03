@@ -37,17 +37,14 @@ class letsencrypt::request::handler(
     $hook_content,
     $letsencrypt_contact_email,
     $letsencrypt_proxy,
-){
-
-    require ::letsencrypt::params
-
-    $handler_base_dir     = $::letsencrypt::params::handler_base_dir
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
-    $dehydrated_dir   = $::letsencrypt::params::dehydrated_dir
-    $dehydrated_hook  = $::letsencrypt::params::dehydrated_hook
-    $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
-    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
-    $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
+    $handler_base_dir = $::letsencrypt::params::handler_base_dir,
+    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
+    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
+    $dehydrated_hook = $::letsencrypt::params::dehydrated_hook,
+    $dehydrated_conf = $::letsencrypt::params::dehydrated_conf,
+    $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
+    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
+) inherits ::letsencrypt::params {
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
