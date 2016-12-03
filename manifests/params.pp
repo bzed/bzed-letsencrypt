@@ -16,9 +16,9 @@
 class letsencrypt::params {
 
     $base_dir = '/etc/letsencrypt'
-    $csr_dir  = '/etc/letsencrypt/csr'
-    $key_dir  = '/etc/letsencrypt/private'
-    $crt_dir  = '/etc/letsencrypt/certs'
+    $csr_dir  = "${base_dir}/csr"
+    $key_dir  = "${base_dir}/private"
+    $crt_dir  = "${base_dir}/certs"
 
     $handler_base_dir = '/opt/letsencrypt'
     $handler_requests_dir  = "${handler_base_dir}/requests"
