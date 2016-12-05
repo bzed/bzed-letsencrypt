@@ -7,14 +7,12 @@ define letsencrypt::request::ocsp(
     $domain = $name
 ) {
 
-    require ::letsencrypt::params
-
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
+    $handler_requests_dir = $::letsencrypt::handler_requests_dir
     $base_dir             = "${handler_requests_dir}/${domain}"
     $crt_file             = "${base_dir}/${domain}.crt"
     $crt_chain_file       = "${base_dir}/${domain}_ca.pem"
     $ocsp_file            = "${crt_file}.ocsp"
-    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
+    $letsencrypt_ocsp_request = "${::letsencrypt::handler_base_dir}/${::letsencrypt::letsencrypt_ocsp_request}"
 
     $ocsp_command = join([
         $letsencrypt_ocsp_request,

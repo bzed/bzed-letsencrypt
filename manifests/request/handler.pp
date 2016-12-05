@@ -37,14 +37,14 @@ class letsencrypt::request::handler(
     $hook_content,
     $letsencrypt_contact_email,
     $letsencrypt_proxy,
-    $handler_base_dir = $::letsencrypt::params::handler_base_dir,
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
-    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
-    $dehydrated_hook = $::letsencrypt::params::dehydrated_hook,
-    $dehydrated_conf = $::letsencrypt::params::dehydrated_conf,
-    $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
-    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
-) inherits ::letsencrypt::params {
+    $handler_base_dir = $::letsencrypt::handler_base_dir,
+    $handler_requests_dir = $::letsencrypt::handler_requests_dir,
+    $dehydrated_dir = $::letsencrypt::dehydrated_dir,
+    $dehydrated_hook = $::letsencrypt::dehydrated_hook,
+    $dehydrated_conf = $::letsencrypt::dehydrated_conf,
+    $letsencrypt_chain_request = "${handler_base_dir}/${::letsencrypt::letsencrypt_chain_request}",
+    $letsencrypt_ocsp_request = "${handler_base_dir}/${::letsencrypt::letsencrypt_ocsp_request}",
+) {
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
@@ -64,6 +64,10 @@ class letsencrypt::request::handler(
         mode   => '0755',
         owner  => 'letsencrypt',
         group  => 'letsencrypt',
+    }
+    file { "/etc/letsencrypt.handler_basedir":
+        ensure  => file,
+        content => $handler_base_dir,
     }
     file { "${handler_base_dir}/.acme-challenges" :
         ensure => directory,

@@ -8,9 +8,7 @@ define letsencrypt::request::crt(
     $domain = $name
 ) {
 
-    require ::letsencrypt::params
-
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
+    $handler_requests_dir = $::letsencrypt::handler_requests_dir
     $base_dir             = "${handler_requests_dir}/${domain}"
     $crt_file             = "${base_dir}/${domain}.crt"
     $ocsp_file            = "${base_dir}/${domain}.crt.ocsp"

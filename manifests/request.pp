@@ -31,19 +31,17 @@ define letsencrypt::request (
     $altnames = undef,
 ) {
 
-    require ::letsencrypt::params
-
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
+    $handler_requests_dir = $::letsencrypt::handler_requests_dir
 
     $base_dir = "${handler_requests_dir}/${domain}"
     $csr_file = "${base_dir}/${domain}.csr"
     $crt_file = "${base_dir}/${domain}.crt"
     $crt_chain_file     = "${base_dir}/${domain}_ca.pem"
-    $dehydrated     = $::letsencrypt::params::dehydrated
-    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir
-    $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
-    $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
-    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
+    $dehydrated     = $::letsencrypt::dehydrated
+    $dehydrated_dir = $::letsencrypt::dehydrated_dir
+    $dehydrated_hook   = $::letsencrypt::dehydrated_hook
+    $dehydrated_conf   = $::letsencrypt::dehydrated_conf
+    $letsencrypt_chain_request  = "${::letsencrypt::handler_base_dir}/${::letsencrypt::letsencrypt_chain_request}"
 
 
     File {
