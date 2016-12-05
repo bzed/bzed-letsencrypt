@@ -44,7 +44,6 @@ define letsencrypt::certificate (
     validate_re($challengetype, '^(http-01|dns-01)$')
     validate_string($domain)
 
-    require ::letsencrypt::params
     require ::letsencrypt::setup
 
     ::letsencrypt::deploy { $domain :
