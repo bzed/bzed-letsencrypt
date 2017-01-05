@@ -11,9 +11,7 @@
 # Copyright 2016 Bernd Zeimetz
 #
 class letsencrypt::setup (
-){
-
-    require ::letsencrypt::params
+) {
 
     group { 'letsencrypt' :
         ensure => present,
@@ -27,15 +25,16 @@ class letsencrypt::setup (
         require => Group['letsencrypt'],
     }
 
-    file { $::letsencrypt::params::base_dir :
-    }
-    file { $::letsencrypt::params::csr_dir :
-    }
-    file { $::letsencrypt::params::crt_dir :
-    }
-    file { $::letsencrypt::params::key_dir :
+    file { $::letsencrypt::base_dir : }
+    file { $::letsencrypt::csr_dir : }
+    file { $::letsencrypt::crt_dir : }
+    file { $::letsencrypt::key_dir :
         mode    => '0750',
     }
 
+    file { "/etc/letsencrypt.basedir":
+        ensure      => file,
+        content     => $::letsencrypt::base_dir
+    }
 
 }

@@ -80,6 +80,18 @@ class letsencrypt (
     $letsencrypt_proxy = undef,
     $dh_param_size = $::letsencrypt::params::dh_param_size,
     $manage_packages = $::letsencrypt::params::manage_packages,
+    $base_dir = $::letsencrypt::params::base_dir,
+    $csr_dir = "${base_dir}/csr",
+    $crt_dir = "${base_dir}/certs",
+    $key_dir = "${base_dir}/private",
+    $handler_base_dir = $::letsencrypt::params::handler_base_dir,
+    $handler_requests_dir = "${handler_base_dir}/requests",
+    $dehydrated_dir = "${handler_base_dir}/dehydrated",
+    $dehydrated_hook = "${handler_base_dir}/letsencrypt_hook",
+    $dehydrated_conf = "${handler_base_dir}/letsencrypt.conf",
+    $dehydrated = "${dehydrated_dir}/dehydrated",
+    $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
+    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request,
 ) inherits ::letsencrypt::params {
 
     require ::letsencrypt::setup

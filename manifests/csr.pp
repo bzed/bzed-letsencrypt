@@ -38,7 +38,6 @@ define letsencrypt::csr(
     $force = true,
     $dh_param_size = 2048,
 ) {
-    require ::letsencrypt::params
 
     validate_string($letsencrypt_host)
     validate_string($country)
@@ -51,10 +50,10 @@ define letsencrypt::csr(
     validate_string($email)
     validate_integer($dh_param_size)
 
-    $base_dir = $::letsencrypt::params::base_dir
-    $csr_dir  = $::letsencrypt::params::csr_dir
-    $key_dir  = $::letsencrypt::params::key_dir
-    $crt_dir  = $::letsencrypt::params::crt_dir
+    $base_dir = $::letsencrypt::base_dir
+    $csr_dir  = $::letsencrypt::csr_dir
+    $key_dir  = $::letsencrypt::key_dir
+    $crt_dir  = $::letsencrypt::crt_dir
 
     $domains = split($domain_list, ' ')
     $domain = $domains[0]

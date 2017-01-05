@@ -31,10 +31,8 @@ define letsencrypt::deploy::crt(
     $domain = $name
 ) {
 
-    require ::letsencrypt::params
-
-    $crt_dir                 = $::letsencrypt::params::crt_dir
-    $key_dir                 = $::letsencrypt::params::key_dir
+    $crt_dir                 = $::letsencrypt::crt_dir
+    $key_dir                 = $::letsencrypt::key_dir
     $crt                     = "${crt_dir}/${domain}.crt"
     $ocsp                    = "${crt_dir}/${domain}.crt.ocsp"
     $key                     = "${key_dir}/${domain}.key"
