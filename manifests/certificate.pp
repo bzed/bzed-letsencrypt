@@ -35,7 +35,7 @@
 define letsencrypt::certificate (
     $domain = $name,
     $challengetype = $::letsencrypt::challengetype,
-    $letsencrypt_host = $::letsencrypt::letsencrypt_host,
+    $letsencrypt_host = $::letsencrypt::letsencrypt_real_host,
     $dh_param_size = $::letsencrypt::dh_param_size,
 ){
 
