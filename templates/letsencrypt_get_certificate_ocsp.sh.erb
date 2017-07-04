@@ -17,7 +17,7 @@ OCSPHOST=$(echo $OCSPURL | sed 's,^.*://\([^/]*\).*,\1,')
 <% if @letsencrypt_proxy -%>
 openssl ocsp -noverify -issuer "${2}" \
     -cert "${1}" \
-    -host "<%= @letsencrypt_proxy -%>" \
+    -host "<%= @letsencrypt_proxy_without_protocol -%>" \
     -path "${OCSPURL}" -respout "${3}.new"
 <% else -%>
 openssl ocsp -noverify -issuer "${2}" \
