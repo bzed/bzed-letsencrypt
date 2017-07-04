@@ -159,7 +159,7 @@ define letsencrypt::csr(
     if ($csr_content =~ /CERTIFICATE REQUEST/) {
         @@letsencrypt::request { $domain :
             csr           => $csr_content,
-            tag           => $letsencrypt_host,
+            tag           => "CRT_HOST=${letsencrypt_host}",
             challengetype => $challengetype,
             altnames      => $altnames,
         }

@@ -141,5 +141,5 @@ class letsencrypt::request::handler(
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }
 
-    Letsencrypt::Request<<| tag == $::fqdn |>>
+    Letsencrypt::Request<<| tag == "CRT_HOST=${::fqdn}" |>>
 }
