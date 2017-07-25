@@ -49,7 +49,9 @@ class letsencrypt::request::handler(
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
 
-    $letsencrypt_proxy_without_protocol = regsubst($letsencrypt_proxy, '^.*://', '')
+    if (!empty($letsencrypt_proxy)) {
+      $letsencrypt_proxy_without_protocol = regsubst($letsencrypt_proxy, '^.*://', '')
+    }
 
     user { 'letsencrypt' :
         gid        => 'letsencrypt',
