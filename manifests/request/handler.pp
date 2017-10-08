@@ -101,22 +101,9 @@ class letsencrypt::request::handler(
     }
 
     # handle switching CAs with different account keys.
-    if ($letsencrypt_ca =~ /.*acme-v01\.api\.letsencrypt\.org.*/) {
-        $private_key_name = 'private_key'
-    } else {
-        $_ca_domain = regsubst(
-            $letsencrypt_ca,
-            '^https?://([^/]+)/.*',
-            '\1'
-        )
-        $_ca_domain_escaped = regsubst(
-            $_ca_domain,
-            '\.',
-            '_',
-            'G'
-        )
-        $private_key_name = "private_key_${_ca_domain_escaped}"
-    }
+    $ca_hash = $::letsencrypt_cas[$letsencrypt_ca]['hash']
+    $ca_url  = $::letsencrypt_cas[$letsencrypt_ca]['url']
+
     file { $dehydrated_conf :
         ensure  => file,
         owner   => root,

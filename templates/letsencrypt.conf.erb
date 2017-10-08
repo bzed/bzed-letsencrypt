@@ -4,7 +4,7 @@
 
 
 # Path to certificate authority (default: https://acme-v01.api.letsencrypt.org/directory)
-CA="<%= @letsencrypt_ca -%>"
+CA="<%= @ca_url -%>"
 
 # Path to license agreement (default: https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf)
 #LICENSE="https://letsencrypt.org/documents/LE-SA-v1.0.1-July-27-2015.pdf"
@@ -25,10 +25,10 @@ BASEDIR="<%= @handler_base_dir -%>"
 #WELLKNOWN="${BASEDIR}/.acme-challenges"
 
 # Location of private account key (default: $BASEDIR/private_key.pem)
-PRIVATE_KEY="<%= @handler_base_dir -%>/<%= @private_key_name -%>.pem"
+PRIVATE_KEY="<%= @handler_base_dir -%>/accounts/<%= @ca_hash -%>/account_key.pem"
 
 # Location of private account registration information (default: $BASEDIR/private_key.json)
-PRIVATE_KEY_JSON="<%= @handler_base_dir -%>/<%= @private_key_name -%>.json"
+PRIVATE_KEY_JSON="<%= @handler_base_dir -%>/accounts/<%= @ca_hash -%>/registration_info.json"
 
 # Default keysize for private keys (default: 4096)
 #KEYSIZE="4096"
