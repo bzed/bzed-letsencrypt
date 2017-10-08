@@ -74,6 +74,7 @@ class letsencrypt (
     $challengetype = $::letsencrypt::params::challengetype,
     $hook_source = undef,
     $hook_content = undef,
+    $hook_env = $::letsencrypt::params::dehydrated_hook_env,
     $letsencrypt_host = $::letsencrypt::params::letsencrypt_host,
     $letsencrypt_ca = $::letsencrypt::params::letsencrypt_ca,
     $letsencrypt_contact_email = undef,
