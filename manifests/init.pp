@@ -30,6 +30,11 @@
 #   dehydrated hook.
 #   hook_source or hook_content needs to be specified.
 #
+# [*hook_env*]
+#   Additional environment variables to set when calling the
+#   verification hook. For example, credentials can be passed
+#   this way. This setting is optional.
+#
 # [*letsencrypt_host*]
 #   The host you want to run dehydrated on.
 #   For now it needs to be a puppetmaster, as it needs direct access
