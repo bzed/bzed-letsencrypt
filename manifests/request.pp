@@ -42,7 +42,7 @@ define letsencrypt::request (
     $dehydrated     = $::letsencrypt::params::dehydrated
     $dehydrated_dir = $::letsencrypt::params::dehydrated_dir
     $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
-    $dehydrated_hook_env = $::letsencrypt::params::dehydrated_hook_env
+    $dehydrated_hook_env = $::letsencrypt::hook_env
     $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
 
