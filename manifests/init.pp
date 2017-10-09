@@ -76,6 +76,7 @@ class letsencrypt (
     $hook_content = undef,
     $letsencrypt_host = $::letsencrypt::params::letsencrypt_host,
     $letsencrypt_ca = $::letsencrypt::params::letsencrypt_ca,
+    $letsencrypt_cas = $::letsencrypt::params::letsencrypt_cas,
     $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
     $dh_param_size = $::letsencrypt::params::dh_param_size,
