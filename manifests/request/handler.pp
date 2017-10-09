@@ -32,6 +32,7 @@
 
 class letsencrypt::request::handler(
     $dehydrated_git_url,
+    $letsencrypt_cas,
     $letsencrypt_ca,
     $hook_source,
     $hook_content,
@@ -101,8 +102,8 @@ class letsencrypt::request::handler(
     }
 
     # handle switching CAs with different account keys.
-    $ca_hash = $::letsencrypt_cas[$letsencrypt_ca]['hash']
-    $ca_url  = $::letsencrypt_cas[$letsencrypt_ca]['url']
+    $ca_hash = $letsencrypt_cas[$letsencrypt_ca]['hash']
+    $ca_url  = $letsencrypt_cas[$letsencrypt_ca]['url']
 
     file { $dehydrated_conf :
         ensure  => file,

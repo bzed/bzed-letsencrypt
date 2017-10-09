@@ -76,6 +76,7 @@ class letsencrypt (
     $hook_content = undef,
     $letsencrypt_host = $::letsencrypt::params::letsencrypt_host,
     $letsencrypt_ca = $::letsencrypt::params::letsencrypt_ca,
+    $letsencrypt_cas = $::letsencrypt::params::letsencrypt_cas,
     $letsencrypt_contact_email = undef,
     $letsencrypt_proxy = undef,
     $dh_param_size = $::letsencrypt::params::dh_param_size,
@@ -97,6 +98,7 @@ class letsencrypt (
             class { '::letsencrypt::request::handler' :
                 dehydrated_git_url        => $dehydrated_git_url,
                 letsencrypt_ca            => $letsencrypt_ca,
+                letsencrypt_cas           => $letsencrypt_cas,
                 hook_source               => $hook_source,
                 hook_content              => $hook_content,
                 letsencrypt_contact_email => $letsencrypt_contact_email,
