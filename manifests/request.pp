@@ -47,11 +47,11 @@ define letsencrypt::request (
 
 
     File {
-        owner   => 'letsencrypt',
-        group   => 'letsencrypt',
+        owner   => $::letsencrypt::user,
+        group   => $::letsencrypt::group,
         require => [
-            User['letsencrypt'],
-            Group['letsencrypt']
+            User[$::letsencrypt::user],
+            Group[$::letsencrypt::group]
         ],
     }
 
@@ -95,14 +95,14 @@ define letsencrypt::request (
     ], ' ')
 
     exec { "create-certificate-${domain}" :
-        user    => 'letsencrypt',
+        user    => $::letsencrypt::user,
         cwd     => $dehydrated_dir,
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         unless  => $le_check_command,
         command => $le_command,
         require => [
-            User['letsencrypt'],
-            Group['letsencrypt'],
+            User[$::letsencrypt::user],
+            Group[$::letsencrypt::group],
             File[$csr_file],
             Vcsrepo[$dehydrated_dir],
             File[$dehydrated_hook],
@@ -122,8 +122,8 @@ define letsencrypt::request (
             File[$letsencrypt_chain_request]
         ],
         refreshonly => true,
-        user        => letsencrypt,
-        group       => letsencrypt,
+        user        => $::letsencrypt::user,
+        group       => $::letsencrypt::group,
         command     => $get_certificate_chain_command,
         timeout     => 5*60,
         tries       => 2,

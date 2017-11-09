@@ -47,8 +47,8 @@ define letsencrypt::request::ocsp(
         command => $ocsp_command,
         unless  => $ocsp_unless,
         onlyif  => $ocsp_onlyif,
-        user    => letsencrypt,
-        group   => letsencrypt,
+        user    => $::letsencrypt::user,
+        group   => $::letsencrypt::group,
         require => File[$letsencrypt_ocsp_request],
     }
 
