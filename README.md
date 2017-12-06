@@ -118,7 +118,7 @@ option:
 ~~~puppet
     class { 'letsencrypt' :
         hook_source    => 'puppet:///modules/mymodule/dehydrated_hook',
-        letsencrypt_ca => 'https://acme-staging.api.letsencrypt.org/directory',
+        letsencrypt_ca => 'staging',
     }
 ~~~
 

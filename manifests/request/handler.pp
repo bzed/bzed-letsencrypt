@@ -32,22 +32,20 @@
 
 class letsencrypt::request::handler(
     $dehydrated_git_url,
+    $letsencrypt_cas,
     $letsencrypt_ca,
     $hook_source,
     $hook_content,
     $letsencrypt_contact_email,
     $letsencrypt_proxy,
-){
-
-    require ::letsencrypt::params
-
-    $handler_base_dir     = $::letsencrypt::params::handler_base_dir
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
-    $dehydrated_dir   = $::letsencrypt::params::dehydrated_dir
-    $dehydrated_hook  = $::letsencrypt::params::dehydrated_hook
-    $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
-    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
-    $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
+    $handler_base_dir = $::letsencrypt::params::handler_base_dir,
+    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
+    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
+    $dehydrated_hook = $::letsencrypt::params::dehydrated_hook,
+    $dehydrated_conf = $::letsencrypt::params::dehydrated_conf,
+    $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
+    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
+) inherits ::letsencrypt::params {
 
     if $::letsencrypt::manage_user {
         user { $::letsencrypt::user:
@@ -103,22 +101,9 @@ class letsencrypt::request::handler(
     }
 
     # handle switching CAs with different account keys.
-    if ($letsencrypt_ca =~ /.*acme-v01\.api\.letsencrypt\.org.*/) {
-        $private_key_name = 'private_key'
-    } else {
-        $_ca_domain = regsubst(
-            $letsencrypt_ca,
-            '^https?://([^/]+)/.*',
-            '\1'
-        )
-        $_ca_domain_escaped = regsubst(
-            $_ca_domain,
-            '\.',
-            '_',
-            'G'
-        )
-        $private_key_name = "private_key_${_ca_domain_escaped}"
-    }
+    $ca_hash = $letsencrypt_cas[$letsencrypt_ca]['hash']
+    $ca_url  = $letsencrypt_cas[$letsencrypt_ca]['url']
+
     file { $dehydrated_conf :
         ensure  => file,
         owner   => root,
@@ -141,6 +126,14 @@ class letsencrypt::request::handler(
         group   => $::letsencrypt::group,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
+    }
+
+    file { $letsencrypt_check_altnames :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => file('letsencrypt/letsencrypt_check_altnames.sh'),
     }
 
     Letsencrypt::Request<<| tag == $::fqdn |>>
