@@ -42,6 +42,7 @@ define letsencrypt::request (
     $dehydrated     = $::letsencrypt::params::dehydrated
     $dehydrated_dir = $::letsencrypt::params::dehydrated_dir
     $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
+    $dehydrated_hook_env = $::letsencrypt::hook_env
     $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames
@@ -97,12 +98,13 @@ define letsencrypt::request (
     ], ' ')
 
     exec { "create-certificate-${domain}" :
-        user    => 'letsencrypt',
-        cwd     => $dehydrated_dir,
-        group   => 'letsencrypt',
-        unless  => $le_check_command,
-        command => $le_command,
-        require => [
+        user        => 'letsencrypt',
+        cwd         => $dehydrated_dir,
+        group       => 'letsencrypt',
+        unless      => $le_check_command,
+        command     => $le_command,
+        environment => $dehydrated_hook_env,
+        require     => [
             User['letsencrypt'],
             Group['letsencrypt'],
             File[$csr_file],
