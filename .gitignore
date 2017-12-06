@@ -9,3 +9,5 @@ log/
 .idea/
 *.iml
 *.swp
+.yardoc/*
+doc/*

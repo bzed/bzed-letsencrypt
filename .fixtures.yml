@@ -5,5 +5,9 @@ fixtures:
     concat:
       repo: 'git://github.com/puppetlabs/puppetlabs-concat'
       ref: '2.1.0'
+    vcsrepo:
+      repo: 'git://github.com/puppetlabs/puppetlabs-vcsrepo'
+    openssl:
+      repo: 'git://github.com/camptocamp/puppet-openssl'
   symlinks:
-    'collectd': "#{source_dir}"
+    'letsencrypt': "#{source_dir}"

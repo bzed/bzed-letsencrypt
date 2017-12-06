@@ -1,3 +1,13 @@
+## Release 0.1.17
+###Summary
+
+- Last bugfix release before the module will be renamed to bzed-dehydrated.
+
+####Bugfixes
+
+- Rubocop / travis-ci fixes
+- Inherit class params from params.pp
+
 ## Release 0.1.16
 ###Summary
 

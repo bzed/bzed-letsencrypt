@@ -68,9 +68,20 @@ define letsencrypt::request (
 
     $le_check_command = join([
         "/usr/bin/test -f ${crt_file}",
+        '&&',
         "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
+        '&&',
         "${letsencrypt_check_altnames} ${csr_file} ${crt_file}"
-    ], ' && ')
+        '&&',
+        '/usr/bin/test',
+        '$(',
+        "/usr/bin/stat -c '%Y' ${crt_file}",
+        ')',
+        '-gt',
+        '$(',
+        "/usr/bin/stat -c '%Y' ${csr_file}",
+        ')',
+    ], ' ')
 
     $le_command = join([
         $dehydrated,
