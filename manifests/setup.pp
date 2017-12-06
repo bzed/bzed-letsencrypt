@@ -17,16 +17,18 @@ class letsencrypt::setup (
     $key_dir = $::letsencrypt::params::key_dir
 ) inherits ::letsencrypt::params {
 
-    group { 'letsencrypt' :
-        ensure => present,
+    if $::letsencrypt::manage_user {
+        group { $::letsencrypt::group :
+            ensure => present,
+        }
     }
 
     File {
         ensure  => directory,
         owner   => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         mode    => '0755',
-        require => Group['letsencrypt'],
+        require => Group[$::letsencrypt::group],
     }
 
     file { $base_dir : }

@@ -55,4 +55,7 @@ class letsencrypt::params {
     }
     $dh_param_size = 2048
     $manage_packages = true
+    $manage_user = true
+    $user = 'letsencrypt'
+    $group = 'letsencrypt'
 }

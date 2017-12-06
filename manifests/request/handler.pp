@@ -47,12 +47,14 @@ class letsencrypt::request::handler(
     $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
 ) inherits ::letsencrypt::params {
 
-    user { 'letsencrypt' :
-        gid        => 'letsencrypt',
-        home       => $handler_base_dir,
-        shell      => '/bin/bash',
-        managehome => false,
-        password   => '!!',
+    if $::letsencrypt::manage_user {
+        user { $::letsencrypt::user:
+            gid        => $::letsencrypt::group,
+            home       => $handler_base_dir,
+            shell      => '/bin/bash',
+            managehome => false,
+            password   => '!!',
+        }
     }
 
     File {
@@ -63,14 +65,14 @@ class letsencrypt::request::handler(
     file { $handler_base_dir :
         ensure => directory,
         mode   => '0755',
-        owner  => 'letsencrypt',
-        group  => 'letsencrypt',
+        owner  => $::letsencrypt::user,
+        group  => $::letsencrypt::group,
     }
     file { "${handler_base_dir}/.acme-challenges" :
         ensure => directory,
         mode   => '0755',
-        owner  => 'letsencrypt',
-        group  => 'letsencrypt',
+        owner  => $::letsencrypt::user,
+        group  => $::letsencrypt::group,
     }
     file { $handler_requests_dir :
         ensure => directory,
@@ -79,8 +81,8 @@ class letsencrypt::request::handler(
 
     file { $dehydrated_hook :
         ensure  => file,
-        group   => 'letsencrypt',
-        require => Group['letsencrypt'],
+        group   => $::letsencrypt::group,
+        require => Group[$::letsencrypt::group],
         source  => $hook_source,
         content => $hook_content,
         mode    => '0750',
@@ -105,7 +107,7 @@ class letsencrypt::request::handler(
     file { $dehydrated_conf :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0640',
         content => template('letsencrypt/letsencrypt.conf.erb'),
     }
@@ -113,7 +115,7 @@ class letsencrypt::request::handler(
     file { $letsencrypt_chain_request :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb'),
     }
@@ -121,7 +123,7 @@ class letsencrypt::request::handler(
     file { $letsencrypt_ocsp_request :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }

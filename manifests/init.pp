@@ -87,6 +87,9 @@ class letsencrypt (
     $letsencrypt_proxy = undef,
     $dh_param_size = $::letsencrypt::params::dh_param_size,
     $manage_packages = $::letsencrypt::params::manage_packages,
+    $manage_user = $::letsencrypt::params::manage_user,
+    $user = $::letsencrypt::params::user,
+    $group = $::letsencrypt::params::group,
 ) inherits ::letsencrypt::params {
 
     require ::letsencrypt::setup
