@@ -138,5 +138,13 @@ class letsencrypt::request::handler(
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }
 
+    file { $letsencrypt_check_altnames :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => file('letsencrypt/letsencrypt_check_altnames.sh'),
+    }
+
     Letsencrypt::Request<<| tag == $::fqdn |>>
 }

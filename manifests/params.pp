@@ -30,6 +30,7 @@ class letsencrypt::params {
 
     $letsencrypt_chain_request = "${handler_base_dir}/letsencrypt_get_certificate_chain.sh"
     $letsencrypt_ocsp_request = "${handler_base_dir}/letsencrypt_get_certificate_ocsp.sh"
+    $letsencrypt_check_altnames = "${handler_base_dir}/letsencrypt_check_altnames.sh"
 
     if defined('$puppetmaster') {
         $letsencrypt_host = $::puppetmaster
@@ -43,5 +44,4 @@ class letsencrypt::params {
     $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory'
     $dh_param_size = 2048
     $manage_packages = true
-
 }
