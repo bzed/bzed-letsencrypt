@@ -93,7 +93,6 @@ class letsencrypt (
 ) inherits ::letsencrypt::params {
 
     require ::letsencrypt::setup
-    $letsencrypt_cas = $::letsencrypt::params::letsencrypt_cas
 
     if ($::fqdn == $letsencrypt_host) {
         class { '::letsencrypt::setup::puppetmaster' :
