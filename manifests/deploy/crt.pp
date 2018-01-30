@@ -46,7 +46,7 @@ define letsencrypt::deploy::crt(
     file { $crt :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         content => $crt_content,
         mode    => '0644',
     }
@@ -55,7 +55,7 @@ define letsencrypt::deploy::crt(
         file { $ocsp :
             ensure  => file,
             owner   => root,
-            group   => letsencrypt,
+            group   => $::letsencrypt::group,
             content => base64('decode', $ocsp_content),
             mode    => '0644',
         }
@@ -68,12 +68,12 @@ define letsencrypt::deploy::crt(
 
     concat { $crt_full_chain :
         owner => root,
-        group => letsencrypt,
+        group => $::letsencrypt::group,
         mode  => '0644',
     }
     concat { $crt_full_chain_with_key :
         owner => root,
-        group => letsencrypt,
+        group => $::letsencrypt::group,
         mode  => '0640',
     }
 
@@ -105,7 +105,7 @@ define letsencrypt::deploy::crt(
         file { $crt_chain :
             ensure  => file,
             owner   => root,
-            group   => letsencrypt,
+            group   => $::letsencrypt::group,
             content => $crt_chain_content,
             mode    => '0644',
         }

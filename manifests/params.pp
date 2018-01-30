@@ -23,13 +23,15 @@ class letsencrypt::params {
     $handler_base_dir = '/opt/letsencrypt'
     $handler_requests_dir  = "${handler_base_dir}/requests"
 
-    $dehydrated_dir  = "${handler_base_dir}/dehydrated"
-    $dehydrated_hook = "${handler_base_dir}/letsencrypt_hook"
-    $dehydrated_conf = "${handler_base_dir}/letsencrypt.conf"
-    $dehydrated      = "${dehydrated_dir}/dehydrated"
+    $dehydrated_dir      = "${handler_base_dir}/dehydrated"
+    $dehydrated_hook     = "${handler_base_dir}/letsencrypt_hook"
+    $dehydrated_hook_env =  []
+    $dehydrated_conf     = "${handler_base_dir}/letsencrypt.conf"
+    $dehydrated          = "${dehydrated_dir}/dehydrated"
 
     $letsencrypt_chain_request = "${handler_base_dir}/letsencrypt_get_certificate_chain.sh"
     $letsencrypt_ocsp_request = "${handler_base_dir}/letsencrypt_get_certificate_ocsp.sh"
+    $letsencrypt_check_altnames = "${handler_base_dir}/letsencrypt_check_altnames.sh"
 
     if defined('$puppetmaster') {
         $letsencrypt_host = $::puppetmaster
@@ -40,8 +42,20 @@ class letsencrypt::params {
     $letsencrypt_sh_git_url = 'https://github.com/lukas2511/dehydrated.git'
     $dehydrated_git_url = $letsencrypt_sh_git_url
     $challengetype = 'dns-01'
-    $letsencrypt_ca = 'https://acme-v01.api.letsencrypt.org/directory'
+    $letsencrypt_ca = 'production'
+    $letsencrypt_cas = {
+      'production' => {
+        'url'  => 'https://acme-v01.api.letsencrypt.org/directory',
+        'hash' => 'aHR0cHM6Ly9hY21lLXYwMS5hcGkubGV0c2VuY3J5cHQub3JnL2RpcmVjdG9yeQo'
+      },
+      'staging'    => {
+        'url'  => 'https://acme-staging.api.letsencrypt.org/directory',
+        'hash' => 'aHR0cHM6Ly9hY21lLXN0YWdpbmcuYXBpLmxldHNlbmNyeXB0Lm9yZy9kaXJlY3RvcnkK'
+      },
+    }
     $dh_param_size = 2048
     $manage_packages = true
-
+    $manage_user = true
+    $user = 'letsencrypt'
+    $group = 'letsencrypt'
 }

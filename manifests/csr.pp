@@ -94,7 +94,7 @@ define letsencrypt::csr(
             File[$crt_dir]
         ],
         user    => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         command => "/usr/bin/openssl dhparam -check ${dh_param_size} -out ${dh}",
         unless  => $create_dh_unless,
         timeout => 30*60,
@@ -103,7 +103,7 @@ define letsencrypt::csr(
     file { $dh :
         ensure  => $ensure,
         owner   => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         mode    => '0644',
         require => Exec["create-dh-${dh}"],
     }
@@ -111,7 +111,7 @@ define letsencrypt::csr(
     file { $cnf :
         ensure  => $ensure,
         owner   => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         mode    => '0644',
         content => template('letsencrypt/cert.cnf.erb'),
     }
@@ -135,7 +135,7 @@ define letsencrypt::csr(
         command     => "rm -f ${csr}",
         refreshonly => true,
         user        => 'root',
-        group       => 'letsencrypt',
+        group       => $::letsencrypt::group,
         before      => X509_request[$csr],
         subscribe   => File[$cnf],
     }
@@ -143,14 +143,14 @@ define letsencrypt::csr(
     file { $key :
         ensure  => $ensure,
         owner   => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         mode    => '0640',
         require => Ssl_pkey[$key],
     }
     file { $csr :
         ensure  => $ensure,
         owner   => 'root',
-        group   => 'letsencrypt',
+        group   => $::letsencrypt::group,
         mode    => '0644',
         require => X509_request[$csr],
     }

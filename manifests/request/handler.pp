@@ -32,12 +32,20 @@
 
 class letsencrypt::request::handler(
     $dehydrated_git_url,
+    $letsencrypt_cas,
     $letsencrypt_ca,
     $hook_source,
     $hook_content,
     $letsencrypt_contact_email,
     $letsencrypt_proxy,
-){
+    $handler_base_dir = $::letsencrypt::params::handler_base_dir,
+    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
+    $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
+    $dehydrated_hook = $::letsencrypt::params::dehydrated_hook,
+    $dehydrated_conf = $::letsencrypt::params::dehydrated_conf,
+    $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
+    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
+) inherits ::letsencrypt::params {
 
     require ::letsencrypt::params
 
@@ -53,12 +61,14 @@ class letsencrypt::request::handler(
       $letsencrypt_proxy_without_protocol = regsubst($letsencrypt_proxy, '^.*://', '')
     }
 
-    user { 'letsencrypt' :
-        gid        => 'letsencrypt',
-        home       => $handler_base_dir,
-        shell      => '/bin/bash',
-        managehome => false,
-        password   => '!!',
+    if $::letsencrypt::manage_user {
+        user { $::letsencrypt::user:
+            gid        => $::letsencrypt::group,
+            home       => $handler_base_dir,
+            shell      => '/bin/bash',
+            managehome => false,
+            password   => '!!',
+        }
     }
 
     File {
@@ -69,14 +79,14 @@ class letsencrypt::request::handler(
     file { $handler_base_dir :
         ensure => directory,
         mode   => '0755',
-        owner  => 'letsencrypt',
-        group  => 'letsencrypt',
+        owner  => $::letsencrypt::user,
+        group  => $::letsencrypt::group,
     }
     file { "${handler_base_dir}/.acme-challenges" :
         ensure => directory,
         mode   => '0755',
-        owner  => 'letsencrypt',
-        group  => 'letsencrypt',
+        owner  => $::letsencrypt::user,
+        group  => $::letsencrypt::group,
     }
     file { $handler_requests_dir :
         ensure => directory,
@@ -85,8 +95,8 @@ class letsencrypt::request::handler(
 
     file { $dehydrated_hook :
         ensure  => file,
-        group   => 'letsencrypt',
-        require => Group['letsencrypt'],
+        group   => $::letsencrypt::group,
+        require => Group[$::letsencrypt::group],
         source  => $hook_source,
         content => $hook_content,
         mode    => '0750',
@@ -105,26 +115,13 @@ class letsencrypt::request::handler(
     }
 
     # handle switching CAs with different account keys.
-    if ($letsencrypt_ca =~ /.*acme-v01\.api\.letsencrypt\.org.*/) {
-        $private_key_name = 'private_key'
-    } else {
-        $_ca_domain = regsubst(
-            $letsencrypt_ca,
-            '^https?://([^/]+)/.*',
-            '\1'
-        )
-        $_ca_domain_escaped = regsubst(
-            $_ca_domain,
-            '\.',
-            '_',
-            'G'
-        )
-        $private_key_name = "private_key_${_ca_domain_escaped}"
-    }
+    $ca_hash = $letsencrypt_cas[$letsencrypt_ca]['hash']
+    $ca_url  = $letsencrypt_cas[$letsencrypt_ca]['url']
+
     file { $dehydrated_conf :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0640',
         content => template('letsencrypt/letsencrypt.conf.erb'),
     }
@@ -132,7 +129,7 @@ class letsencrypt::request::handler(
     file { $letsencrypt_chain_request :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb'),
     }
@@ -140,10 +137,19 @@ class letsencrypt::request::handler(
     file { $letsencrypt_ocsp_request :
         ensure  => file,
         owner   => root,
-        group   => letsencrypt,
+        group   => $::letsencrypt::group,
         mode    => '0755',
         content => template('letsencrypt/letsencrypt_get_certificate_ocsp.sh.erb'),
     }
 
     Letsencrypt::Request<<| tag == "crt-host-${::fqdn}" |>>
+
+    file { $letsencrypt_check_altnames :
+        ensure  => file,
+        owner   => root,
+        group   => letsencrypt,
+        mode    => '0755',
+        content => file('letsencrypt/letsencrypt_check_altnames.sh'),
+    }
+
 }

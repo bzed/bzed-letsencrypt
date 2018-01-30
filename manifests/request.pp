@@ -42,16 +42,17 @@ define letsencrypt::request (
     $dehydrated     = $::letsencrypt::params::dehydrated
     $dehydrated_dir = $::letsencrypt::params::dehydrated_dir
     $dehydrated_hook   = $::letsencrypt::params::dehydrated_hook
+    $dehydrated_hook_env = $::letsencrypt::hook_env
     $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
-
+    $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames
 
     File {
-        owner   => 'letsencrypt',
-        group   => 'letsencrypt',
+        owner   => $::letsencrypt::user,
+        group   => $::letsencrypt::group,
         require => [
-            User['letsencrypt'],
-            Group['letsencrypt']
+            User[$::letsencrypt::user],
+            Group[$::letsencrypt::group]
         ],
     }
 
@@ -70,6 +71,8 @@ define letsencrypt::request (
         "/usr/bin/test -f ${crt_file}",
         '&&',
         "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
+        '&&',
+        "${letsencrypt_check_altnames} ${csr_file} ${crt_file}"
         '&&',
         '/usr/bin/test',
         '$(',
@@ -95,14 +98,15 @@ define letsencrypt::request (
     ], ' ')
 
     exec { "create-certificate-${domain}" :
-        user    => 'letsencrypt',
-        cwd     => $dehydrated_dir,
-        group   => 'letsencrypt',
-        unless  => $le_check_command,
-        command => $le_command,
-        require => [
-            User['letsencrypt'],
-            Group['letsencrypt'],
+        user        => $::letsencrypt::user,
+        cwd         => $dehydrated_dir,
+        group       => $::letsencrypt::group,
+        unless      => $le_check_command,
+        command     => $le_command,
+        environment => $dehydrated_hook_env,
+        require     => [
+            User[$::letsencrypt::user],
+            Group[$::letsencrypt::group],
             File[$csr_file],
             Vcsrepo[$dehydrated_dir],
             File[$dehydrated_hook],
@@ -122,8 +126,8 @@ define letsencrypt::request (
             File[$letsencrypt_chain_request]
         ],
         refreshonly => true,
-        user        => letsencrypt,
-        group       => letsencrypt,
+        user        => $::letsencrypt::user,
+        group       => $::letsencrypt::group,
         command     => $get_certificate_chain_command,
         timeout     => 5*60,
         tries       => 2,
