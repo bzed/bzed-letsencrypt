@@ -52,15 +52,6 @@ class letsencrypt::request::handler(
 
     require ::letsencrypt::params
 
-    $handler_base_dir     = $::letsencrypt::params::handler_base_dir
-    $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
-    $dehydrated_dir   = $::letsencrypt::params::dehydrated_dir
-    $dehydrated_hook  = $::letsencrypt::params::dehydrated_hook
-    $domain_validation_hook = $::letsencrypt::params::domain_validation_hook
-    $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
-    $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
-    $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
-
     if (!empty($letsencrypt_proxy)) {
       $letsencrypt_proxy_without_protocol = regsubst($letsencrypt_proxy, '^.*://', '')
     }
