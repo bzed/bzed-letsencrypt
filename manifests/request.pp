@@ -46,6 +46,7 @@ define letsencrypt::request (
     $dehydrated_conf   = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames
+    $domain_validation_hook = $::letsencrypt::params::domain_validation_hook
 
     File {
         owner   => $::letsencrypt::user,
@@ -85,6 +86,9 @@ define letsencrypt::request (
     ], ' ')
 
     $le_command = join([
+        $domain_validation_hook,
+        $domain,
+        '&&',
         $dehydrated,
         "-d ${domain}",
         "-k ${dehydrated_hook}",

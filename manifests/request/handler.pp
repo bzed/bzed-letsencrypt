@@ -106,14 +106,29 @@ class letsencrypt::request::handler(
         mode    => '0750',
     }
 
-    file { $domain_validation_hook :
-        ensure  => file,
-        group   => $::letsencrypt::group,
-        require => Group[$::letsencrypt::group],
-        source  => $domain_validation_hook_source,
-        content => $domain_validation_hook_content,
-        mode    => '0750',
+    if (!empty($domain_validation_hook_source) or !empty($domain_validation_hook_content)) {
+        file { $domain_validation_hook :
+            ensure  => file,
+            group   => $::letsencrypt::group,
+            require => Group[$::letsencrypt::group],
+            source  => $domain_validation_hook_source,
+            content => $domain_validation_hook_content,
+            mode    => '0750',
+            before  => File[$dehydrated_hook],
+        }
+    } else {
+        $exit0 = join(['#!/bin/bash', '', 'exit 0', '',], "\n")
+
+        file { $domain_validation_hook :
+            ensure  => file,
+            group   => $::letsencrypt::group,
+            require => Group[$::letsencrypt::group],
+            content => $exit0,
+            mode    => '0750',
+            before  => File[$dehydrated_hook],
+        }
     }
+
 
     vcsrepo { $dehydrated_dir :
         ensure   => latest,
