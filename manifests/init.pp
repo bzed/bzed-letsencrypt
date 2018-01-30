@@ -30,6 +30,18 @@
 #   dehydrated hook.
 #   hook_source or hook_content needs to be specified.
 #
+# [*domain_validation_hook_source*]
+#   Source of a domain validation hook which runs before
+#   dehydrated. If the hook fails, dehydrated won't be executed.
+#   Can be used to check if the real hook will actually succeed -
+#   usable to avoid being blocked form letsencrypt.
+#   This setting is optional.
+#
+# [*domain_validation_hook_content*]
+#   The actual content (as in file { ...: content => }) of the
+#   domain_validation_hook. See *domain_validation_hook_source*
+#   for a description.
+#
 # [*hook_env*]
 #   Additional environment variables to set when calling the
 #   verification hook. For example, credentials can be passed
@@ -77,6 +89,8 @@ class letsencrypt (
     $letsencrypt_sh_git_url = $::letsencrypt::params::letsencrypt_sh_git_url,
     $dehydrated_git_url = $letsencrypt_sh_git_url,
     $challengetype = $::letsencrypt::params::challengetype,
+    $domain_validation_hook_source = undef,
+    $domain_validation_hook_content = undef,
     $hook_source = undef,
     $hook_content = undef,
     $hook_env = $::letsencrypt::params::dehydrated_hook_env,
@@ -105,13 +119,15 @@ class letsencrypt (
             }
         } else {
             class { '::letsencrypt::request::handler' :
-                dehydrated_git_url        => $dehydrated_git_url,
-                letsencrypt_ca            => $letsencrypt_ca,
-                letsencrypt_cas           => $letsencrypt_cas,
-                hook_source               => $hook_source,
-                hook_content              => $hook_content,
-                letsencrypt_contact_email => $letsencrypt_contact_email,
-                letsencrypt_proxy         => $letsencrypt_proxy,
+                dehydrated_git_url             => $dehydrated_git_url,
+                letsencrypt_ca                 => $letsencrypt_ca,
+                letsencrypt_cas                => $letsencrypt_cas,
+                hook_source                    => $hook_source,
+                hook_content                   => $hook_content,
+                domain_validation_hook_source  => $domain_validation_hook_source,
+                domain_validation_hook_content => $domain_validation_hook_content,
+                letsencrypt_contact_email      => $letsencrypt_contact_email,
+                letsencrypt_proxy              => $letsencrypt_proxy,
             }
         }
         if ($::letsencrypt_crts and $::letsencrypt_crts != '') {

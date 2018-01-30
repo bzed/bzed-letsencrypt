@@ -38,6 +38,8 @@ class letsencrypt::request::handler(
     $hook_content,
     $letsencrypt_contact_email,
     $letsencrypt_proxy,
+    $domain_validation_hook_source = undef,
+    $domain_validation_hook_content = undef,
     $handler_base_dir = $::letsencrypt::params::handler_base_dir,
     $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
     $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
@@ -53,6 +55,7 @@ class letsencrypt::request::handler(
     $handler_requests_dir = $::letsencrypt::params::handler_requests_dir
     $dehydrated_dir   = $::letsencrypt::params::dehydrated_dir
     $dehydrated_hook  = $::letsencrypt::params::dehydrated_hook
+    $domain_validation_hook = $::letsencrypt::params::domain_validation_hook
     $dehydrated_conf  = $::letsencrypt::params::dehydrated_conf
     $letsencrypt_chain_request  = $::letsencrypt::params::letsencrypt_chain_request
     $letsencrypt_ocsp_request   = $::letsencrypt::params::letsencrypt_ocsp_request
@@ -99,6 +102,15 @@ class letsencrypt::request::handler(
         require => Group[$::letsencrypt::group],
         source  => $hook_source,
         content => $hook_content,
+        mode    => '0750',
+    }
+
+    file { $domain_validation_hook :
+        ensure  => file,
+        group   => $::letsencrypt::group,
+        require => Group[$::letsencrypt::group],
+        source  => $domain_validation_hook_source,
+        content => $domain_validation_hook_content,
         mode    => '0750',
     }
 
