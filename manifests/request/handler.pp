@@ -46,7 +46,8 @@ class letsencrypt::request::handler(
     $dehydrated_hook = $::letsencrypt::params::dehydrated_hook,
     $dehydrated_conf = $::letsencrypt::params::dehydrated_conf,
     $letsencrypt_chain_request = $::letsencrypt::params::letsencrypt_chain_request,
-    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request
+    $letsencrypt_ocsp_request = $::letsencrypt::params::letsencrypt_ocsp_request,
+    $letsencrypt_check_altnames = $::letsencrypt::params::letsencrypt_check_altnames,
 ) inherits ::letsencrypt::params {
 
     require ::letsencrypt::params
