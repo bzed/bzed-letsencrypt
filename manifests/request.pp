@@ -85,9 +85,14 @@ define letsencrypt::request (
         ')',
     ], ' ')
 
+    if ($altnames) {
+        $validate_domains = "${domain} ${altnames}"
+    } else {
+        $validate_domains = $domain
+    }
     $le_command = join([
         $domain_validation_hook,
-        $domain,
+        $validate_domains,
         '&&',
         $dehydrated,
         "-d ${domain}",
