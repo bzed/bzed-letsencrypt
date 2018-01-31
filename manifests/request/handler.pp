@@ -40,6 +40,7 @@ class letsencrypt::request::handler(
     $letsencrypt_proxy,
     $domain_validation_hook_source = undef,
     $domain_validation_hook_content = undef,
+    $domain_validation_hook = $::letsencrypt::params::domain_validation_hook,
     $handler_base_dir = $::letsencrypt::params::handler_base_dir,
     $handler_requests_dir = $::letsencrypt::params::handler_requests_dir,
     $dehydrated_dir = $::letsencrypt::params::dehydrated_dir,
