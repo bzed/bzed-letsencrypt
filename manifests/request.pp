@@ -68,42 +68,48 @@ define letsencrypt::request (
         mode    => '0640',
     }
 
+    $_csr_file = shellquote($csr_file)
+    $_crt_file = shellquote($_crt_file)
+    $_crt_chain_file = shellquote($crt_chain_file)
+
     $le_check_command = join([
-        "/usr/bin/test -f ${crt_file}",
+        "/usr/bin/test -f ${_crt_file}",
         '&&',
-        "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${crt_file}",
+        "/usr/bin/openssl x509 -checkend 2592000 -noout -in ${_crt_file}",
         '&&',
-        "${letsencrypt_check_altnames} ${csr_file} ${crt_file}",
+        "${letsencrypt_check_altnames} ${_csr_file} ${_crt_file}",
         '&&',
         '/usr/bin/test',
         '$(',
-        "/usr/bin/stat -c '%Y' ${crt_file}",
+        "/usr/bin/stat -c '%Y' ${_crt_file}",
         ')',
         '-gt',
         '$(',
-        "/usr/bin/stat -c '%Y' ${csr_file}",
+        "/usr/bin/stat -c '%Y' ${_csr_file}",
         ')',
     ], ' ')
 
     if ($altnames) {
-        $validate_domains = "${domain} ${altnames}"
+        $validate_domains = shellquote(split("${domain} ${altnames}", ' '))
     } else {
-        $validate_domains = $domain
+        $validate_domains = shellquote([$domain,])
     }
+
+
     $le_command = join([
         $domain_validation_hook,
         $validate_domains,
         '&&',
         $dehydrated,
-        "-d ${domain}",
-        "-k ${dehydrated_hook}",
-        "-t ${challengetype}",
-        "-f ${dehydrated_conf}",
+        '-d', shellquote($domain),
+        '-k', shellquote($dehydrated_hook),
+        '-t', shellquote($challengetype),
+        '-f', shellquote($dehydrated_conf),
         '-a rsa',
         '--signcsr',
-        $csr_file,
-        "> ${crt_file}.new",
-        "&& /bin/mv ${crt_file}.new ${crt_file}",
+        $_csr_file,
+        "> ${_crt_file}.new",
+        "&& /bin/mv ${_crt_file}.new ${_crt_file}",
     ], ' ')
 
     exec { "create-certificate-${domain}" :
@@ -125,8 +131,8 @@ define letsencrypt::request (
 
     $get_certificate_chain_command = join([
         $letsencrypt_chain_request,
-        $crt_file,
-        $crt_chain_file,
+        $_crt_file,
+        $_crt_chain_file,
     ], ' ')
     exec { "get-certificate-chain-${domain}" :
         require     => File[$letsencrypt_chain_request],
