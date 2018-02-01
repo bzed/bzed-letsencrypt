@@ -127,6 +127,7 @@ define letsencrypt::request (
             File[$dehydrated_hook],
             File[$dehydrated_conf],
         ],
+        timeout     => length(split($validate_domains, ' ')) * 30,
     }
 
     $get_certificate_chain_command = join([

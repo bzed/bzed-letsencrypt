@@ -50,6 +50,7 @@ define letsencrypt::request::ocsp(
         user    => $::letsencrypt::user,
         group   => $::letsencrypt::group,
         require => File[$letsencrypt_ocsp_request],
+        tries   => 2,
     }
 
     file { $ocsp_file :
