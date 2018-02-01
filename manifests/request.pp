@@ -69,7 +69,7 @@ define letsencrypt::request (
     }
 
     $_csr_file = shellquote($csr_file)
-    $_crt_file = shellquote($_crt_file)
+    $_crt_file = shellquote($crt_file)
     $_crt_chain_file = shellquote($crt_chain_file)
 
     $le_check_command = join([
