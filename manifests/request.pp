@@ -90,8 +90,7 @@ define letsencrypt::request (
     ], ' ')
 
     if ($altnames and !empty($altnames)) {
-        $_altnames = join($altnames, ' ')
-        $validate_domains = shellquote(split("${domain} ${_altnames}", ' '))
+        $validate_domains = shellquote(flatten([$domain, $altnames]))
     } else {
         $validate_domains = shellquote([$domain,])
     }
