@@ -53,6 +53,14 @@ class letsencrypt::params {
         'url'  => 'https://acme-staging.api.letsencrypt.org/directory',
         'hash' => 'aHR0cHM6Ly9hY21lLXN0YWdpbmcuYXBpLmxldHNlbmNyeXB0Lm9yZy9kaXJlY3RvcnkK'
       },
+      'v2-production' => {
+        'url'  => 'https://acme-v02.api.letsencrypt.org/directory',
+        'hash' => 'aHR0cHM6Ly9hY21lLXYwMi5hcGkubGV0c2VuY3J5cHQub3JnL2RpcmVjdG9yeQo'
+      },
+      'v2-staging'    => {
+        'url'  => 'https://acme-staging-v02.api.letsencrypt.org/directory',
+        'hash' => 'aHR0cHM6Ly9hY21lLXN0YWdpbmctdjAyLmFwaS5sZXRzZW5jcnlwdC5vcmcvZGlyZWN0b3J5Cg'
+      },
     }
     $dh_param_size = 2048
     $manage_packages = true

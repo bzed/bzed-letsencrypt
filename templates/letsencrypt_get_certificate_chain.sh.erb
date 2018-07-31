@@ -26,7 +26,8 @@ CHAINURL=$(openssl x509 -in "${1}" -noout -text | grep 'CA Issuers - URI:' | cut
 wget -q -O "${2}.new" "${CHAINURL}"
 
 if ! grep -q "BEGIN CERTIFICATE" "${2}.new"; then
-    openssl x509 -in "${2}.new" -inform DER -out "${2}.new" -outform PEM
+    openssl x509 -in "${2}.new" -inform DER -out "${2}.new.pem" -outform PEM
 fi
-mv "${2}.new" "${2}"
+mv "${2}.new.pem" "${2}"
+rm "${2}.new"
 

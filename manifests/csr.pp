@@ -22,7 +22,6 @@
 # Copyright 2016 Bernd Zeimetz
 #
 
-
 define letsencrypt::csr(
     $letsencrypt_host,
     $challengetype,
@@ -95,7 +94,7 @@ define letsencrypt::csr(
         ],
         user    => 'root',
         group   => $::letsencrypt::group,
-        command => "/usr/bin/openssl dhparam -check ${dh_param_size} -out ${dh}",
+        command => "/usr/bin/openssl dhparam -check ${dh_param_size} > ${dh}",
         unless  => $create_dh_unless,
         timeout => 30*60,
     }
