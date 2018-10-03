@@ -154,6 +154,8 @@ class letsencrypt::request::handler(
         content => template('letsencrypt/letsencrypt_get_certificate_chain.sh.erb'),
     }
 
+    $openssl_11 = (versioncmp($::openssl_version, '1.1') >=0)
+
     file { $letsencrypt_ocsp_request :
         ensure  => file,
         owner   => root,
