@@ -22,7 +22,11 @@ openssl ocsp -noverify -issuer "${2}" \
 <% else -%>
 openssl ocsp -noverify -issuer "${2}" \
     -cert "${1}" \
+<% if @openssl_11 -%>
     -header Host="${OCSPHOST}" \
+<% else -%>
+    -header Host "${OCSPHOST}" \
+<% end -%>
     -url "${OCSPURL}" -respout "${3}.new"
 
 <% end -%>
