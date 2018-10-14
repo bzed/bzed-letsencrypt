@@ -1,8 +1,8 @@
 {
   "name": "bzed-letsencrypt",
-  "version": "0.1.17",
+  "version": "1.0.0",
   "author": "Bernd Zeimetz",
-  "summary": "Centralized CSR signing using Let’s Encrypt™ - keeping your keys safe on the host they belong to",
+  "summary": "DEPRECATED - please use bzed-dehydrated instead!",
   "license": "Apache-2.0",
   "source": "https://github.com/bzed/bzed-letsencrypt",
   "project_page": "https://github.com/bzed/bzed-letsencrypt",
