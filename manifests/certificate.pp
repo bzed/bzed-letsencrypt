@@ -56,4 +56,8 @@ define letsencrypt::certificate (
         dh_param_size    => $dh_param_size,
     }
 
+    deprecation(
+      'bzed-letsencrypt-deprecated',
+      'bzed-letsencrypt is deprecated, please use bzed-dehydrated instead!'
+    )
 }
